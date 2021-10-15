@@ -31,7 +31,7 @@ public class GameCatalogue {
 
     // EFFECTS: returns list (of game) of all the games in the catalogue
     public List<Game> getAllGames() {
-        return allGames;
+        return allGames;            // NOTE: needed mostly for test of addGame
     }
 
     // MODIFIES: this
@@ -41,11 +41,8 @@ public class GameCatalogue {
     }
 
     // EFFECTS: returns a single string of all game titles,
-    //          if games list is empty, says there are no games in game catalogue
+    //          when games list is empty, returns empty string
     public String getAllGameTitles() {
-        if (allGames.isEmpty()) {
-            return "There are no games in your game catalogue.";
-        }
         List<String> allGamesString = new ArrayList<>();
         for (Game g: allGames) {
             String title = g.getTitle();
@@ -57,7 +54,7 @@ public class GameCatalogue {
     // REQUIRES: given playing status is in lowercase, and is one of: "completed", "currently playing", "on hold" or
     //           "plan to play"
     // EFFECT: returns a single string of all game titles that have the given playing status,
-    //         if there are no games with the play status, returns string notifying this
+    //         when there are no games with the play status, returns empty string
     public String assortByPlayStatus(String playStatus) {
         List<String> givenPlayStatus = new ArrayList<>();
         for (Game game: allGames) {
@@ -66,16 +63,13 @@ public class GameCatalogue {
                 givenPlayStatus.add(title);
             }
         }
-        if (givenPlayStatus.isEmpty()) {
-            return "You have no games with this play status.";
-        }
         return String.join(", ", givenPlayStatus);
     }
 
     // REQUIRES: given genre is in lowercase, and is one of: "fps", "rpg", "adventure", "puzzle", "horror",
     //           "simulation", "platformer"
     // EFFECT: returns a single string of all game titles that are of the given game genre
-    //         if there are no games with the genre, returns string notifying this
+    //         when there are no games with the genre, returns empty string
     public String assortByGenre(String genre) {
         List<String> givenGenre = new ArrayList<>();
         for (Game game: allGames) {
@@ -84,10 +78,6 @@ public class GameCatalogue {
                 givenGenre.add(title);
             }
         }
-        if (givenGenre.isEmpty()) {
-            return "You have no games in this genre.";
-        }
         return String.join(", ", givenGenre);
     }
-
 }

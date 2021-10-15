@@ -77,6 +77,9 @@ public class GameSortingApp {
     // EFFECTS: processes user response on main menu
     private void responseMainMenu(String command) {
         if (command.equals("1")) {
+            if (gameCatalogue.getAllGameTitles().isEmpty()) {
+                System.out.println("\nThere are no games in your game catalogue.");
+            }
             System.out.println(gameCatalogue.getAllGameTitles());
         } else if (command.equals("2")) {
             System.out.println("\nWhat game are you looking for?");
@@ -97,12 +100,14 @@ public class GameSortingApp {
         }
     }
 
+    // EFFECTS: returns game details if there is a game with the matching string title,
+    //          if getting game produces null, says game title can't be found
     private void searchGameDetails() {
         String targetGame = input.next();
         if (gameCatalogue.getGame(targetGame) == null) {
             System.out.println("\nGame with this title couldn't be found...");
         } else {
-            gameCatalogue.getGame(targetGame).getGameDetails();
+            System.out.println(gameCatalogue.getGame(targetGame).getGameDetails());
         }
     }
 
@@ -123,7 +128,12 @@ public class GameSortingApp {
             System.out.println("Invalid game genre, please try an available genre below.");
             assortValidGenre();
         } else {
-            System.out.println(gameCatalogue.assortByGenre(givenGenre));
+            if (gameCatalogue.assortByGenre(givenGenre).isEmpty()) {
+                System.out.println("You have no games in this genre.");
+            } else {
+                System.out.println(gameCatalogue.assortByGenre(givenGenre));
+            }
+
         }
     }
 
@@ -140,7 +150,11 @@ public class GameSortingApp {
             System.out.println("Invalid play status, please try one of the valid ones below.");
             assortValidPlayStatus();
         } else {
-            System.out.println(gameCatalogue.assortByPlayStatus(givenPlayStatus));
+            if (gameCatalogue.assortByPlayStatus(givenPlayStatus).isEmpty()) {
+                System.out.println("\nYou have no games with this play status.");
+            } else {
+                System.out.println(gameCatalogue.assortByPlayStatus(givenPlayStatus));
+            }
         }
     }
 
@@ -200,6 +214,7 @@ public class GameSortingApp {
             System.out.println("Invalid game genre, please try an available genre below.");
             askGenre();
         }
+
         return givenGenre;
     }
 
@@ -210,8 +225,7 @@ public class GameSortingApp {
         while (true) {
             String givenYear = input.next();
             try {
-                int gameYear = Integer.parseInt(givenYear);
-                return gameYear;
+                return Integer.parseInt(givenYear);
             } catch (Exception e) {
                 System.out.println("Not a number, please enter a year.");
             }

@@ -34,9 +34,9 @@ public class Game {
         return playStatus;
     }
 
-    // REQUIRES: string input is one of "completed", "currently playing", "on hold", "plan to play"
+    // REQUIRES: string input is one of: "completed", "currently playing", "on hold", "plan to play"
     // MODIFIES: this
-    // EFFECTS: changes a game's playing status to another based on its assigned string
+    // EFFECTS: changes a game's playing status to another playing status based on its assigned string
     public void setPlayStatus(String ps) {
         if (ps.equals("completed")) {
             playStatus = COMPLETED;
@@ -45,13 +45,13 @@ public class Game {
         } else if (ps.equals("on hold")) {
             playStatus = ON_HOLD;
         } else {
-            playStatus = PLAN_TO_PLAY; // last possible string input
+            playStatus = PLAN_TO_PLAY;  // last possible string input given requires restriction
         }
     }
 
-    // Converts to strings
+    // Converts enumeration to string
     // REQUIRES: inputs a valid GameGenre enumeration
-    // EFFECTS: returns string of genre enumeration (used for game details)
+    // EFFECTS: returns string of the same name to the genre enumeration
     public String stringGenre() {
         if (genre.equals(FPS)) {
             return "FPS";
@@ -66,12 +66,12 @@ public class Game {
         } else if (genre.equals(SIMULATION)) {
             return "Simulation";
         } else {
-            return "Platformer";        // final enumeration
+            return "Platformer";        // final enumeration possible given requires restriction
         }
     }
 
     // REQUIRES: inputs a valid PlayStatus enumeration
-    // EFFECT: returns string of playing status enumeration (used for game details)
+    // EFFECT: returns string of the same name to the playing status enumeration
     public String stringPlayStatus() {
         if (playStatus.equals(COMPLETED)) {
             return "Completed";
@@ -80,7 +80,7 @@ public class Game {
         } else if (playStatus.equals(ON_HOLD)) {
             return "On hold";
         } else {
-            return "Plan to play";      // final enumeration
+            return "Plan to play";      // final enumeration possible given requires restriction
         }
     }
 

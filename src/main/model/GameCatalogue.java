@@ -19,7 +19,7 @@ public class GameCatalogue {
         return username;
     }
 
-    // EFFECTS: returns a game with the given string title, otherwise returns null
+    // EFFECTS: returns the game with the given string title, otherwise returns null
     public Game getGame(String name) {
         for (Game g: allGames) {
             if (g.getTitle().equals(name)) {
@@ -29,7 +29,7 @@ public class GameCatalogue {
         return null;
     }
 
-    // EFFECTS: returns list of all the games in the catalogue
+    // EFFECTS: returns list (of game) of all the games in the catalogue
     public List<Game> getAllGames() {
         return allGames;
     }
@@ -40,7 +40,8 @@ public class GameCatalogue {
         allGames.add(g);
     }
 
-    // EFFECTS: returns a single combined string of all game titles
+    // EFFECTS: returns a single string of all game titles,
+    //          if games list is empty, says there are no games in game catalogue
     public String getAllGameTitles() {
         if (allGames.isEmpty()) {
             return "There are no games in your game catalogue.";
@@ -53,7 +54,9 @@ public class GameCatalogue {
         return String.join(", ", allGamesString);
     }
 
-    // EFFECTS: returns a specific given game's details, says not found if title doesn't match a game in allGames
+    // EFFECTS: searches games list for game with the same title,
+    //          if found, returns string of the game's details,
+    //          if not found, returns string saying game title is not found
     public String searchGameDetails(String gameName) {
         for (Game g: allGames) {
             if (g.getTitle().equals(gameName)) {
@@ -63,9 +66,10 @@ public class GameCatalogue {
         return "Game with this title couldn't be found...";
     }
 
-    // REQUIRES: given playing status is in lowercase, restricted to "completed", "currently playing", "on hold" or
+    // REQUIRES: given playing status is in lowercase, and is one of: "completed", "currently playing", "on hold" or
     //           "plan to play"
-    // EFFECT: returns a single string of all game titles that have the given playing status
+    // EFFECT: returns a single string of all game titles that have the given playing status,
+    //         if there are no games with the play status, returns string notifying this
     public String assortByPlayStatus(String playStatus) {
         List<String> givenPlayStatus = new ArrayList<>();
         for (Game game: allGames) {
@@ -80,9 +84,10 @@ public class GameCatalogue {
         return String.join(", ", givenPlayStatus);
     }
 
-    // REQUIRES: given genre is in lowercase and restricted to "fps", "rpg", "adventure", "puzzle", "horror",
+    // REQUIRES: given genre is in lowercase, and is one of: "fps", "rpg", "adventure", "puzzle", "horror",
     //           "simulation", "platformer"
     // EFFECT: returns a single string of all game titles that are of the given game genre
+    //         if there are no games with the genre, returns string notifying this
     public String assortByGenre(String genre) {
         List<String> givenGenre = new ArrayList<>();
         for (Game game: allGames) {

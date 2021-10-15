@@ -153,7 +153,7 @@ public class GameSortingApp {
         System.out.println("\nThis game has just been added into your catalogue.");
     }
 
-    // EFFECTS: returns GameGenre to corresponding string input.
+    // EFFECTS: returns GameGenre to corresponding string input
     private GameGenre askGenre() {
         System.out.println("\nWhat is the game genre?");
         String genreInput = returnGenre();
@@ -175,7 +175,7 @@ public class GameSortingApp {
         }
     }
 
-    // EFFECTS: returns given genre string if valid, if invalid, asks for another genre attempt.
+    // EFFECTS: returns given genre string if valid, if invalid, asks for another genre attempt
     private String returnGenre() {
         System.out.println("- FPS");
         System.out.println("- RPG");
@@ -194,7 +194,7 @@ public class GameSortingApp {
         return givenGenre;
     }
 
-    // EFFECTS: if given string contains integer, returns it as an integer, otherwise returns invalid message
+    // EFFECTS: if given string contains integer, returns it as the year, otherwise returns invalid message
     //          and prompts for another attempt.
     private int askValidYear() {
         System.out.println("\nWhat year was this game released?");
@@ -209,7 +209,7 @@ public class GameSortingApp {
         }
     }
 
-    // EFFECTS:
+    // EFFECTS: returns given play status string if valid, if invalid, asks for another play status attempt
     private String askValidPlayStatus() {
         System.out.println("- Completed");
         System.out.println("- Currently playing");
@@ -224,7 +224,7 @@ public class GameSortingApp {
         return initialPlayStatus;
     }
 
-    // EFFECTS:
+    // EFFECTS: prompts to search for a game to change the playing status
     private void searchGameToChangeStatus() {
         System.out.println("\nWhich game would you like to change?");
         Game gameToChange = gameCatalogue.getGame(input.next());

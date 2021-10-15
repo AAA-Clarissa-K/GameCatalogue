@@ -208,21 +208,6 @@ public class GameCatalogueTest {
         assertEquals(expected, myGameCatalogue.assortByPlayStatus("plan to play"));
     }
 
-//    @Test
-//    public void testAssortByPlayStatusNotFound() {
-//        myGameCatalogue.addGame(compGame);
-//        myGameCatalogue.addGame(currGame);
-//        myGameCatalogue.addGame(onHoldGame);
-//        myGameCatalogue.addGame(planToPlayGame);
-//
-//        myGameCatalogue.addGame(fpsGame);
-//        myGameCatalogue.addGame(horrorGame);
-//        myGameCatalogue.addGame(platGame);
-//
-//        assertEquals("",
-//                myGameCatalogue.assortByPlayStatus("unsure"));
-//    }
-
     // Assorting by genres
     @Test
     public void testAssortByGenreFPS() {
@@ -294,14 +279,4 @@ public class GameCatalogueTest {
 
         assertEquals("Getting Over It", myGameCatalogue.assortByGenre("platformer"));
     }
-
-//    @Test
-//    public void testAssortByGenreNotFound() {
-//        myGameCatalogue.addGame(compGame);
-//        myGameCatalogue.addGame(planToPlayGame);
-//        myGameCatalogue.addGame(horrorGame);
-//        myGameCatalogue.addGame(platGame);
-//
-//        assertEquals("", myGameCatalogue.assortByGenre("jrpg"));
-//    }
 }

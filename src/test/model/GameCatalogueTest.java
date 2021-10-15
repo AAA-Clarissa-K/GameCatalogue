@@ -143,23 +143,6 @@ public class GameCatalogueTest {
         assertEquals("Spiritfarer, Marvel's Spider-Man", myGameCatalogue.getAllGameTitles());
     }
 
-    // Searching for a game
-    @Test
-    public void testSearchGameFound() {
-        myGameCatalogue.addGame(horrorGame);
-        myGameCatalogue.addGame(compGame);
-
-        assertEquals(horrorGame.getGameDetails(), myGameCatalogue.searchGameDetails("Phasmaphobia"));
-    }
-
-    @Test
-    public void testSearchGameNotFound() {
-        myGameCatalogue.addGame(horrorGame);
-        myGameCatalogue.addGame(compGame);
-
-        assertEquals("Game with this title couldn't be found...", myGameCatalogue.searchGameDetails("Spiritfarer"));
-    }
-
     // Assorting by play status
     @Test
     public void testAssortByPlayStatusCompletedOne() {

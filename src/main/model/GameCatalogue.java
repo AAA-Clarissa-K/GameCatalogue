@@ -54,18 +54,6 @@ public class GameCatalogue {
         return String.join(", ", allGamesString);
     }
 
-    // EFFECTS: searches games list for game with the same title,
-    //          if found, returns string of the game's details,
-    //          if not found, returns string saying game title is not found
-    public String searchGameDetails(String gameName) {
-        for (Game g: allGames) {
-            if (g.getTitle().equals(gameName)) {
-                return g.getGameDetails();
-            }
-        }
-        return "Game with this title couldn't be found...";
-    }
-
     // REQUIRES: given playing status is in lowercase, and is one of: "completed", "currently playing", "on hold" or
     //           "plan to play"
     // EFFECT: returns a single string of all game titles that have the given playing status,

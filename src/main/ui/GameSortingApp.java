@@ -80,7 +80,7 @@ public class GameSortingApp {
             System.out.println(gameCatalogue.getAllGameTitles());
         } else if (command.equals("2")) {
             System.out.println("\nWhat game are you looking for?");
-            System.out.println(gameCatalogue.searchGameDetails(input.next()));
+            searchGameDetails();
         } else if (command.equals("3")) {
             System.out.println("\nWhich genre are you looking for?");
             assortValidGenre();
@@ -94,6 +94,15 @@ public class GameSortingApp {
             keepGoing = false;
         }  else {
             System.out.println("\nInvalid input, please choose a number from 0 to 6.");
+        }
+    }
+
+    private void searchGameDetails() {
+        String targetGame = input.next();
+        if (gameCatalogue.getGame(targetGame) == null) {
+            System.out.println("\nGame with this title couldn't be found...");
+        } else {
+            gameCatalogue.getGame(targetGame).getGameDetails();
         }
     }
 

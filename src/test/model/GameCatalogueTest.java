@@ -38,10 +38,10 @@ public class GameCatalogueTest {
         planToPlayGame = new Game("Slime Rancher", "Monomi Park", SIMULATION,
                 planToPlayGamePlatforms, 2016, PLAN_TO_PLAY);
 
-        List<String> fpsPlatform = new ArrayList<>(Arrays.asList("Microsoft Windows"));
+        List<String> fpsPlatform = new ArrayList<>(Arrays.asList("Microsoft Windows", "PlayStation 4"));
         fpsGame = new Game("Valorant", "Riot Games", FPS,
                 fpsPlatform,2019, CURRENTLY_PLAYING);
-        List<String> horrorPlatform = new ArrayList<>(Arrays.asList("Microsoft Windows"));
+        List<String> horrorPlatform = new ArrayList<>(Arrays.asList("Microsoft Windows", "macOS"));
         horrorGame = new Game("Phasmaphobia", "Kinetic Games", HORROR,
                 horrorPlatform,2019, ON_HOLD);
         List<String> platPlatform = new ArrayList<>(Arrays.asList("macOS", "Microsoft Windows"));
@@ -55,6 +55,18 @@ public class GameCatalogueTest {
         assertEquals("Clarissa", myGameCatalogue.getUsername());
     }
 
+    @Test
+    public void testGetGameNull() {
+        assertNull(myGameCatalogue.getGame("Spiritfarer"));
+    }
+
+    @Test
+    public void testGetGameIsFound() {
+        myGameCatalogue.addGame(currGame);
+
+        assertEquals(currGame, myGameCatalogue.getGame("Spiritfarer"));
+    }
+
     // Adding a game
     @Test
     public void testAddGameToEmpty() {
@@ -63,17 +75,21 @@ public class GameCatalogueTest {
         List<Game> gamesList = myGameCatalogue.getAllGames();
 
         assertEquals(1, gamesList.size());
+        assertTrue(gamesList.contains(currGame));
     }
 
     @Test
     public void testAddGameToMultiple() {
         myGameCatalogue.addGame(currGame);
-        myGameCatalogue.addGame(currGame);
-        myGameCatalogue.addGame(currGame);
+        myGameCatalogue.addGame(compGame);
+        myGameCatalogue.addGame(onHoldGame);
 
         List<Game> gamesList = myGameCatalogue.getAllGames();
 
         assertEquals(3, gamesList.size());
+        assertTrue(gamesList.contains(currGame));
+        assertTrue(gamesList.contains(compGame));
+        assertTrue(gamesList.contains(onHoldGame));
     }
 
     // retrieving all the games
@@ -96,13 +112,27 @@ public class GameCatalogueTest {
         assertTrue(gamesList.contains(compGame));
     }
 
+    // retrieving game titles
+    @Test
+    public void testGetAllGameTitlesEmpty() {
+        assertEquals("There are no games in your game catalogue.", myGameCatalogue.getAllGameTitles());
+    }
+
+    @Test
+    public void testGetAllGameTitlesSome() {
+        myGameCatalogue.addGame(currGame);
+        myGameCatalogue.addGame(compGame);
+
+        assertEquals("Spiritfarer, Marvel's Spider-Man", myGameCatalogue.getAllGameTitles());
+    }
+
     // Searching for a game
     @Test
     public void testSearchGameFound() {
         myGameCatalogue.addGame(horrorGame);
         myGameCatalogue.addGame(compGame);
 
-        assertEquals(horrorGame.getGameDetails(), myGameCatalogue.searchGame("Phasmaphobia"));
+        assertEquals(horrorGame.getGameDetails(), myGameCatalogue.searchGameDetails("Phasmaphobia"));
     }
 
     @Test
@@ -110,23 +140,7 @@ public class GameCatalogueTest {
         myGameCatalogue.addGame(horrorGame);
         myGameCatalogue.addGame(compGame);
 
-        assertEquals("Game with this title couldn't be found...", myGameCatalogue.searchGame("Spiritfarer"));
-    }
-
-    // Getting your favourites list
-    @Test
-    public void testGetFavourites() {
-        myGameCatalogue.addGame(compGame);
-        myGameCatalogue.addGame(currGame);
-        myGameCatalogue.addGame(onHoldGame);
-        myGameCatalogue.addGame(planToPlayGame);
-
-        compGame.setFavourite(true);
-        onHoldGame.setFavourite(true);
-
-        String expected = "Marvel's Spider-Man, The Witness";
-
-        assertEquals(expected, myGameCatalogue.getFavourites());
+        assertEquals("Game with this title couldn't be found...", myGameCatalogue.searchGameDetails("Spiritfarer"));
     }
 
     // Assorting by play status
@@ -143,7 +157,7 @@ public class GameCatalogueTest {
 
         String expected = "Marvel's Spider-Man";
 
-        assertEquals(expected, myGameCatalogue.assortByPlayStatus("Completed"));
+        assertEquals(expected, myGameCatalogue.assortByPlayStatus("completed"));
     }
 
     @Test
@@ -159,7 +173,7 @@ public class GameCatalogueTest {
 
         String expected = "Spiritfarer, Valorant";
 
-        assertEquals(expected, myGameCatalogue.assortByPlayStatus("Currently playing"));
+        assertEquals(expected, myGameCatalogue.assortByPlayStatus("currently playing"));
     }
 
     @Test
@@ -175,7 +189,7 @@ public class GameCatalogueTest {
 
         String expected = "The Witness, Phasmaphobia";
 
-        assertEquals(expected, myGameCatalogue.assortByPlayStatus("On hold"));
+        assertEquals(expected, myGameCatalogue.assortByPlayStatus("on hold"));
     }
 
     @Test
@@ -191,7 +205,22 @@ public class GameCatalogueTest {
 
         String expected = "Slime Rancher, Getting Over It";
 
-        assertEquals(expected, myGameCatalogue.assortByPlayStatus("Plan to play"));
+        assertEquals(expected, myGameCatalogue.assortByPlayStatus("plan to play"));
+    }
+
+    @Test
+    public void testAssortByPlayStatusNotFound() {
+        myGameCatalogue.addGame(compGame);
+        myGameCatalogue.addGame(currGame);
+        myGameCatalogue.addGame(onHoldGame);
+        myGameCatalogue.addGame(planToPlayGame);
+
+        myGameCatalogue.addGame(fpsGame);
+        myGameCatalogue.addGame(horrorGame);
+        myGameCatalogue.addGame(platGame);
+
+        assertEquals("You have no games with this play status.",
+                myGameCatalogue.assortByPlayStatus("unsure"));
     }
 
     // Assorting by genres
@@ -203,7 +232,7 @@ public class GameCatalogueTest {
         myGameCatalogue.addGame(horrorGame);
         myGameCatalogue.addGame(platGame);
 
-        assertEquals("Valorant", myGameCatalogue.assortByGenre("FPS"));
+        assertEquals("Valorant", myGameCatalogue.assortByGenre("fps"));
     }
 
     @Test
@@ -213,7 +242,7 @@ public class GameCatalogueTest {
         myGameCatalogue.addGame(horrorGame);
         myGameCatalogue.addGame(platGame);
 
-        assertEquals("Marvel's Spider-Man", myGameCatalogue.assortByGenre("RPG"));
+        assertEquals("Marvel's Spider-Man", myGameCatalogue.assortByGenre("rpg"));
     }
 
     @Test
@@ -223,7 +252,7 @@ public class GameCatalogueTest {
         myGameCatalogue.addGame(horrorGame);
         myGameCatalogue.addGame(platGame);
 
-        assertEquals("Spiritfarer", myGameCatalogue.assortByGenre("Adventure"));
+        assertEquals("Spiritfarer", myGameCatalogue.assortByGenre("adventure"));
     }
 
     @Test
@@ -233,7 +262,7 @@ public class GameCatalogueTest {
         myGameCatalogue.addGame(horrorGame);
         myGameCatalogue.addGame(onHoldGame);
 
-        assertEquals("The Witness", myGameCatalogue.assortByGenre("Puzzle"));
+        assertEquals("The Witness", myGameCatalogue.assortByGenre("puzzle"));
     }
 
     @Test
@@ -243,7 +272,7 @@ public class GameCatalogueTest {
         myGameCatalogue.addGame(horrorGame);
         myGameCatalogue.addGame(platGame);
 
-        assertEquals("Phasmaphobia", myGameCatalogue.assortByGenre("Horror"));
+        assertEquals("Phasmaphobia", myGameCatalogue.assortByGenre("horror"));
     }
 
     @Test
@@ -253,7 +282,7 @@ public class GameCatalogueTest {
         myGameCatalogue.addGame(horrorGame);
         myGameCatalogue.addGame(platGame);
 
-        assertEquals("Slime Rancher", myGameCatalogue.assortByGenre("Simulation"));
+        assertEquals("Slime Rancher", myGameCatalogue.assortByGenre("simulation"));
     }
 
     @Test
@@ -263,6 +292,16 @@ public class GameCatalogueTest {
         myGameCatalogue.addGame(horrorGame);
         myGameCatalogue.addGame(platGame);
 
-        assertEquals("Getting Over It", myGameCatalogue.assortByGenre("Platformer"));
+        assertEquals("Getting Over It", myGameCatalogue.assortByGenre("platformer"));
+    }
+
+    @Test
+    public void testAssortByGenreNotFound() {
+        myGameCatalogue.addGame(compGame);
+        myGameCatalogue.addGame(planToPlayGame);
+        myGameCatalogue.addGame(horrorGame);
+        myGameCatalogue.addGame(platGame);
+
+        assertEquals("You have no games in this genre.", myGameCatalogue.assortByGenre("jrpg"));
     }
 }

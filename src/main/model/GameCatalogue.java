@@ -1,17 +1,17 @@
 package model;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
+//  A game catalogue consists of the user's username (String), and a list of games the user has added (List<Game>).
 public class GameCatalogue {
-    //  A game catalogue consists of the user's username (String), and a list of games the user has added (List<Game>)
     private String username;
     private List<Game> allGames;
 
 
     public GameCatalogue(String username) {
         this.username = username;
-        allGames = new LinkedList<>();
+        allGames = new ArrayList<>();
     }
 
     // getter
@@ -19,15 +19,33 @@ public class GameCatalogue {
         return username;
     }
 
+    // EFFECTS: returns a game with the given string title, otherwise returns null
+    public Game getGame(String name) {
+        for (Game g: allGames) {
+            if (g.getTitle().equals(name)) {
+                return g;
+            }
+        }
+        return null;
+    }
+
+    // EFFECTS: returns list of all the games in the catalogue
     public List<Game> getAllGames() {
         return allGames;
     }
 
+    // MODIFIES: this
+    // EFFECTS: adds a game to the game catalogue
+    public void addGame(Game g) {
+        allGames.add(g);
+    }
+
+    // EFFECTS: returns a single combined string of all game titles
     public String getAllGameTitles() {
         if (allGames.isEmpty()) {
-            return "There are no games in your game catalogue";
+            return "There are no games in your game catalogue.";
         }
-        List<String> allGamesString = new LinkedList<>();
+        List<String> allGamesString = new ArrayList<>();
         for (Game g: allGames) {
             String title = g.getTitle();
             allGamesString.add(title);
@@ -35,63 +53,46 @@ public class GameCatalogue {
         return String.join(", ", allGamesString);
     }
 
-    // EFFECTS: adds game to the game catalogue
-    public void addGame(Game g) {
-        allGames.add(g);
-    }
-
-    // EFFECTS: returns a specific given game's game details
-    public String searchGame(String gameName) {
+    // EFFECTS: returns a specific given game's details, says not found if title doesn't match a game in allGames
+    public String searchGameDetails(String gameName) {
         for (Game g: allGames) {
-            if (g.getTitle() == gameName) {
+            if (g.getTitle().equals(gameName)) {
                 return g.getGameDetails();
             }
         }
         return "Game with this title couldn't be found...";
     }
 
-    // EFFECTS: checks the playing status of a specific given game
-    public String checkPlayStatus(String gameName) {
-        for (Game g: allGames) {
-            if (g.getTitle() == gameName) {
-                return g.stringPlayStatus();
-            }
-        }
-        return "Game with this title couldn't be found...";
-    }
-
-    // EFFECT: returns list of game titles that have been marked as a favourite
-    public String getFavourites() {
-        List<String> favourites = new LinkedList<>();
-        for (Game game: allGames) {
-            if (game.isFavourite()) {
-                String title = game.getTitle();
-                favourites.add(title);
-            }
-        }
-        return String.join(", ", favourites);
-    }
-
-    // EFFECT: returns list of game titles that have the given playing status
+    // REQUIRES: given playing status is in lowercase, restricted to "completed", "currently playing", "on hold" or
+    //           "plan to play"
+    // EFFECT: returns a single string of all game titles that have the given playing status
     public String assortByPlayStatus(String playStatus) {
-        List<String> givenPlayStatus = new LinkedList<>();
+        List<String> givenPlayStatus = new ArrayList<>();
         for (Game game: allGames) {
-            if (game.stringPlayStatus().equals(playStatus)) {
+            if (game.stringPlayStatus().toLowerCase().equals(playStatus)) {
                 String title = game.getTitle();
                 givenPlayStatus.add(title);
             }
         }
+        if (givenPlayStatus.isEmpty()) {
+            return "You have no games with this play status.";
+        }
         return String.join(", ", givenPlayStatus);
     }
 
-    // EFFECT: returns list of game titles that are of the given game genre
+    // REQUIRES: given genre is in lowercase and restricted to "fps", "rpg", "adventure", "puzzle", "horror",
+    //           "simulation", "platformer"
+    // EFFECT: returns a single string of all game titles that are of the given game genre
     public String assortByGenre(String genre) {
-        List<String> givenGenre = new LinkedList<>();
+        List<String> givenGenre = new ArrayList<>();
         for (Game game: allGames) {
-            if (game.stringGenre().equals(genre)) {
+            if (game.stringGenre().toLowerCase().equals(genre)) {
                 String title = game.getTitle();
                 givenGenre.add(title);
             }
+        }
+        if (givenGenre.isEmpty()) {
+            return "You have no games in this genre.";
         }
         return String.join(", ", givenGenre);
     }

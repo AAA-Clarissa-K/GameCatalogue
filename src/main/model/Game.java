@@ -5,17 +5,15 @@ import java.util.List;
 import static model.GameGenre.*;
 import static model.PlayStatus.*;
 
+//  Each game should hold information about its title (String), developer (String), genre (GameGenre), platforms it
+//  can be played on (List<String>), its year of release (int), the user's playing status on the game (PlayStatus),
 public class Game {
-    //  Each game should hold information about its title (String), developer (String), genre (GameGenre), platforms it
-    //  can be played on (List<String>), its year of release (int), the user's playing status on the game (PlayStatus),
-    //  and whether this game is one of the user's favourites
     private String title;
     private String developer;
     private GameGenre genre;
     private List<String> platform;
     private int year;
     private PlayStatus playStatus;
-    private boolean favourite;
 
 
     public Game(String title, String dev, GameGenre genre, List<String> platform, int year, PlayStatus playStatus) {
@@ -25,7 +23,6 @@ public class Game {
         this.platform = platform;
         this.year = year;
         this.playStatus = playStatus;
-        favourite = false;
     }
 
     // getters
@@ -37,47 +34,28 @@ public class Game {
         return developer;
     }
 
-    public GameGenre getGenre() {
-        return genre;
-    }
-
-    public List<String> getPlatform() {
-        return platform;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
     public PlayStatus getPlayStatus() {
         return playStatus;
     }
 
-    public boolean isFavourite() {
-        return favourite;
-    }
-
-    // EFFECT: sets a playing status by its assigned string
+    // REQUIRES: string input is one of "completed", "currently playing", "on hold", "plan to play"
+    // MODIFIES: this
+    // EFFECTS: changes a game's playing status to another based on its assigned string
     public void setPlayStatus(String ps) {
-        if (ps.equals("Completed")) {
+        if (ps.equals("completed")) {
             playStatus = COMPLETED;
-        } else if (ps.equals("Currently playing")) {
+        } else if (ps.equals("currently playing")) {
             playStatus = CURRENTLY_PLAYING;
-        } else if (ps.equals("On hold")) {
+        } else if (ps.equals("on hold")) {
             playStatus = ON_HOLD;
-        } else if (ps.equals("Plan to play")) {
+        } else if (ps.equals("plan to play")) {
             playStatus = PLAN_TO_PLAY;
         }
     }
 
-    // EFFECT: changes whether game is in favourites
-    public void setFavourite(boolean b) {
-        favourite = b;
-    }
-
-    // Change to strings
-
-    // EFFECT: returns string of genre enumeration
+    // Converts to strings
+    // REQUIRES: inputs a valid GameGenre enumeration
+    // EFFECTS: returns string of genre enumeration (used for game details)
     public String stringGenre() {
         if (genre.equals(FPS)) {
             return "FPS";
@@ -91,13 +69,13 @@ public class Game {
             return "Horror";
         } else if (genre.equals(SIMULATION)) {
             return "Simulation";
-        } else if (genre.equals(PLATFORMER)) {
-            return "Platformer";
+        } else {
+            return "Platformer";        // final enumeration
         }
-        return "No genres assigned";
     }
 
-    // EFFECT: returns string of playing status enumeration
+    // REQUIRES: inputs a valid PlayStatus enumeration
+    // EFFECT: returns string of playing status enumeration (used for game details)
     public String stringPlayStatus() {
         if (playStatus.equals(COMPLETED)) {
             return "Completed";
@@ -105,17 +83,16 @@ public class Game {
             return "Currently playing";
         } else if (playStatus.equals(ON_HOLD)) {
             return "On hold";
-        } else if (playStatus.equals(PLAN_TO_PLAY)) {
-            return "Plan to play";
+        } else {
+            return "Plan to play";      // final enumeration
         }
-        return "No play status assigned";
     }
 
-    // EFFECT: returns string of game details
+    // EFFECT: returns string of game details: title, developer name, genre, platform(s), release year and play status
     public String getGameDetails() {
         return "Title: " + getTitle() + "\n"
                 + "Developed by: " + getDeveloper() + "\n"
-                + "Genre(s):" + stringGenre() + "\n"
+                + "Genre: " + stringGenre() + "\n"
                 + "Platform(s): " + String.join(", ", platform) + "\n"
                 + "Released in: " + year + "\n"
                 + "Playing Status: " + stringPlayStatus();

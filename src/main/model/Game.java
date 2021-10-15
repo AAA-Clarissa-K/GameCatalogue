@@ -30,10 +30,6 @@ public class Game {
         return title;
     }
 
-    public String getDeveloper() {
-        return developer;
-    }
-
     public PlayStatus getPlayStatus() {
         return playStatus;
     }
@@ -48,8 +44,8 @@ public class Game {
             playStatus = CURRENTLY_PLAYING;
         } else if (ps.equals("on hold")) {
             playStatus = ON_HOLD;
-        } else if (ps.equals("plan to play")) {
-            playStatus = PLAN_TO_PLAY;
+        } else {
+            playStatus = PLAN_TO_PLAY; // last possible string input
         }
     }
 
@@ -91,7 +87,7 @@ public class Game {
     // EFFECT: returns string of game details: title, developer name, genre, platform(s), release year and play status
     public String getGameDetails() {
         return "Title: " + getTitle() + "\n"
-                + "Developed by: " + getDeveloper() + "\n"
+                + "Developed by: " + developer + "\n"
                 + "Genre: " + stringGenre() + "\n"
                 + "Platform(s): " + String.join(", ", platform) + "\n"
                 + "Released in: " + year + "\n"

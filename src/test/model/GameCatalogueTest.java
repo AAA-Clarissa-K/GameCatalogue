@@ -61,10 +61,27 @@ public class GameCatalogueTest {
     }
 
     @Test
-    public void testGetGameIsFound() {
+    public void testGetGameNullMany() {
+        myGameCatalogue.addGame(compGame);
+        myGameCatalogue.addGame(onHoldGame);
+
+        assertNull(myGameCatalogue.getGame("Spiritfarer"));
+    }
+
+    @Test
+    public void testGetGameIsFoundOne() {
         myGameCatalogue.addGame(currGame);
 
         assertEquals(currGame, myGameCatalogue.getGame("Spiritfarer"));
+    }
+
+    @Test
+    public void testGetGameIsFoundMany() {
+        myGameCatalogue.addGame(currGame);
+        myGameCatalogue.addGame(compGame);
+        myGameCatalogue.addGame(onHoldGame);
+
+        assertEquals(compGame, myGameCatalogue.getGame("Marvel's Spider-Man"));
     }
 
     // Adding a game

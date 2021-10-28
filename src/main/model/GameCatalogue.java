@@ -44,13 +44,6 @@ public class GameCatalogue implements Writable {
         allGames.add(g);
     }
 
-    // REQUIRES: game exists in the database
-    // MODIFIES: this
-    // EFFECTS: removes a game to the game catalogue
-    public void removeGame(Game g) {
-        allGames.remove(g);
-    }
-
     // EFFECTS: returns a single string of all game titles,
     //          when games list is empty, returns empty string
     public String getAllGameTitles() {

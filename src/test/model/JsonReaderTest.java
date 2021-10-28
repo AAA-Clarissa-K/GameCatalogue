@@ -1,8 +1,7 @@
-package persistence;
+package model;
 
-import model.Game;
-import model.GameCatalogue;
 import org.junit.jupiter.api.Test;
+import persistence.JsonReader;
 
 import java.io.IOException;
 import java.util.Arrays;

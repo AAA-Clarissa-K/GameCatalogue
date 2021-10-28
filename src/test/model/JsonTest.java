@@ -1,4 +1,4 @@
-package persistence;
+package model;
 
 import model.Game;
 import model.GameGenre;

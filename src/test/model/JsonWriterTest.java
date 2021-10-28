@@ -1,10 +1,10 @@
-package persistence;
+package model;
 
-import model.Game;
-import model.GameCatalogue;
 import static model.GameGenre.*;
 import static model.PlayStatus.*;
 import org.junit.jupiter.api.Test;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -313,7 +313,7 @@ public class GameSortingApp {
     private void loadGameCatalogue() {
         try {
             gameCatalogue = jsonReader.read();
-            System.out.println("Loaded " + gameCatalogue.getUsername() + "'s games from " + GAME_STORE);
+            System.out.println("Loaded previous player's games from " + GAME_STORE);
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + GAME_STORE);
         }

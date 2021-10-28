@@ -1,5 +1,8 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.List;
 
 import static model.GameGenre.*;
@@ -7,7 +10,7 @@ import static model.PlayStatus.*;
 
 //  Each game should hold information about its title (String), developer (String), genre (GameGenre), platforms it
 //  can be played on (List<String>), its year of release (int), the user's playing status on the game (PlayStatus),
-public class Game {
+public class Game implements Writable {
     private String title;
     private String developer;
     private GameGenre genre;
@@ -15,7 +18,7 @@ public class Game {
     private int year;
     private PlayStatus playStatus;
 
-
+    // constructs a game
     public Game(String title, String dev, GameGenre genre, List<String> platform, int year, PlayStatus playStatus) {
         this.title = title;
         developer = dev;
@@ -28,6 +31,22 @@ public class Game {
     // getters
     public String getTitle() {
         return title;
+    }
+
+    public String getDeveloper() {
+        return developer;
+    }
+
+    public GameGenre getGenre() {
+        return genre;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public List<String> getPlatform() {
+        return platform;
     }
 
     public PlayStatus getPlayStatus() {
@@ -87,10 +106,22 @@ public class Game {
     // EFFECT: returns string of game details: title, developer name, genre, platform(s), release year and play status
     public String getGameDetails() {
         return "Title: " + getTitle() + "\n"
-                + "Developed by: " + developer + "\n"
+                + "Developed by: " + getDeveloper() + "\n"
                 + "Genre: " + stringGenre() + "\n"
                 + "Platform(s): " + String.join(", ", platform) + "\n"
                 + "Released in: " + year + "\n"
                 + "Playing Status: " + stringPlayStatus();
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("title", title);
+        json.put("developer", developer);
+        json.put("genre", genre);
+        json.put("platform", String.join(", ", platform));
+        json.put("year", year);
+        json.put("play status", playStatus);
+        return json;
     }
 }

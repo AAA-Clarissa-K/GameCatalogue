@@ -54,6 +54,26 @@ class GameTest {
     }
 
     @Test
+    public void testGetDeveloper() {
+        assertEquals("Insomniac Games", compGame.getDeveloper());
+    }
+
+    @Test
+    public void testGetGenre() {
+        assertEquals(RPG, compGame.getGenre());
+    }
+
+    @Test
+    public void testGetYear() {
+        assertEquals(2018, compGame.getYear());
+    }
+
+    @Test
+    public void testGetPlatform() {
+        assertEquals(Arrays.asList("PlayStation 4", "PlayStation 5"), compGame.getPlatform());
+    }
+
+    @Test
     public void testGetPlayStatus() {
         assertEquals(COMPLETED, compGame.getPlayStatus());
     }

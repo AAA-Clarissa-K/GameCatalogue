@@ -3,7 +3,11 @@ package ui;
 import model.Game;
 import model.GameCatalogue;
 import model.GameGenre;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -13,9 +17,12 @@ import static model.PlayStatus.*;
 
 // Represents the console interface of a game sorting application
 public class GameSortingApp {
+    private static final String GAME_STORE = "./data/myFile.txt";
     private GameCatalogue gameCatalogue;
     private Scanner input;
     private boolean keepGoing;
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
     // EFFECTS: runs the game sorting application
     public GameSortingApp() {
@@ -44,6 +51,8 @@ public class GameSortingApp {
     // EFFECTS: initializes scanner and keepGoing boolean
     private void init() {
         input = new Scanner(System.in);
+        jsonWriter = new JsonWriter(GAME_STORE);
+        jsonReader = new JsonReader(GAME_STORE);
         input.useDelimiter("\n");
         keepGoing = true;
     }
@@ -71,16 +80,16 @@ public class GameSortingApp {
         System.out.println("\nTo edit games, press one of:");
         System.out.println("5. Add a game");
         System.out.println("6. Change a game's playing status");
+        System.out.println("\nTo save or load games, press one of:");
+        System.out.println("7. Save games to a file");
+        System.out.println("8. Load games from a file");
         System.out.println("\nTo exit game catalogue, press 0");
     }
 
     // EFFECTS: processes user response on main menu
     private void responseMainMenu(String command) {
         if (command.equals("1")) {
-            if (gameCatalogue.getAllGameTitles().isEmpty()) {
-                System.out.println("\nThere are no games in your game catalogue.");
-            }
-            System.out.println(gameCatalogue.getAllGameTitles());
+            returnGames();
         } else if (command.equals("2")) {
             System.out.println("\nWhat game are you looking for?");
             searchGameDetails();
@@ -93,11 +102,22 @@ public class GameSortingApp {
             displayGamePrompt();
         } else if (command.equals("6")) {
             searchGameToChangeStatus();
+        } else if (command.equals("7")) {
+            saveGameCatalogue();
+        } else if (command.equals("8")) {
+            loadGameCatalogue();
         } else if (command.equals("0")) {
             keepGoing = false;
         }  else {
             System.out.println("\nInvalid input, please choose a number from 0 to 6.");
         }
+    }
+
+    private void returnGames() {
+        if (gameCatalogue.getAllGameTitles().isEmpty()) {
+            System.out.println("\nThere are no games in your game catalogue.");
+        }
+        System.out.println(gameCatalogue.getAllGameTitles());
     }
 
     // EFFECTS: returns game details if there is a game with the matching string title,
@@ -273,6 +293,29 @@ public class GameSortingApp {
             changeValidGamePlayStatus(gameToChange);
         } else {
             gameToChange.setPlayStatus(givenPlayStatus);
+        }
+    }
+
+    // EFFECTS: saves the game catalogue to file
+    private void saveGameCatalogue() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(gameCatalogue);
+            jsonWriter.close();
+            System.out.println("Saved " + gameCatalogue.getUsername() + "'s games to " + GAME_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + GAME_STORE);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads workroom from file
+    private void loadGameCatalogue() {
+        try {
+            gameCatalogue = jsonReader.read();
+            System.out.println("Loaded " + gameCatalogue.getUsername() + "'s games from " + GAME_STORE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + GAME_STORE);
         }
     }
 }

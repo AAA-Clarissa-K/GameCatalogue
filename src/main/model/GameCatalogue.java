@@ -1,14 +1,18 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 import java.util.List;
 
 //  A game catalogue consists of the user's username (String), and a list of games the user has added (List<Game>).
-public class GameCatalogue {
+public class GameCatalogue implements Writable {
     private String username;
     private List<Game> allGames;
 
-
+    // constructs a game catalogue
     public GameCatalogue(String username) {
         this.username = username;
         allGames = new ArrayList<>();
@@ -38,6 +42,13 @@ public class GameCatalogue {
     // EFFECTS: adds a game to the game catalogue
     public void addGame(Game g) {
         allGames.add(g);
+    }
+
+    // REQUIRES: game exists in the database
+    // MODIFIES: this
+    // EFFECTS: removes a game to the game catalogue
+    public void removeGame(Game g) {
+        allGames.remove(g);
     }
 
     // EFFECTS: returns a single string of all game titles,
@@ -79,5 +90,24 @@ public class GameCatalogue {
             }
         }
         return String.join(", ", givenGenre);
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("username", username);
+        json.put("games", gamesToJson());
+        return json;
+    }
+
+    // EFFECTS: returns games in this game catalogue as a JSON array
+    private JSONArray gamesToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Game g : allGames) {
+            jsonArray.put(g.toJson());
+        }
+
+        return jsonArray;
     }
 }

@@ -24,3 +24,9 @@ For my game catalogue:
 - As a user, I want to be able to view game titles based on their playing status, and genre
 - As a user, I want to be able to search for a game title and view the details of the game
 - As a user, I want to be able to change the playing status of the game
+
+
+- As a user, I want to be able to save my games to file
+- As a user, I want to be able to load my games from file
+
+(Code for saving and loading files referenced from JSON libraries)

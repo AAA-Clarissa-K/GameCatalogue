@@ -1,0 +1,24 @@
+{
+  "games": [
+    {
+      "year": 2018,
+      "play status": "COMPLETED",
+      "genre": "RPG",
+      "developer": "Insomniac Games",
+      "title": "Marvel's Spider-Man",
+      "platform": ["PlayStation 4"]
+    },
+    {
+      "year": 2020,
+      "play status": "CURRENTLY_PLAYING",
+      "genre": "ADVENTURE",
+      "developer": "Thunder Lotus Games",
+      "title": "Spiritfarer",
+      "platform": [
+        "Nintendo Switch",
+        "macOS"
+      ]
+    }
+  ],
+  "username": "Clarissa"
+}

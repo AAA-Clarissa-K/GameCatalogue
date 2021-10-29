@@ -17,7 +17,7 @@ import static model.PlayStatus.*;
 
 // Represents the console interface of a game sorting application
 public class GameSortingApp {
-    private static final String GAME_STORE = "./data/myFile.txt";
+    private static final String GAME_STORE = "./data/myGameCatalogue.json";
     private GameCatalogue gameCatalogue;
     private Scanner input;
     private boolean keepGoing;
@@ -309,7 +309,7 @@ public class GameSortingApp {
     }
 
     // MODIFIES: this
-    // EFFECTS: loads workroom from file
+    // EFFECTS: loads game catalogue from file
     private void loadGameCatalogue() {
         try {
             gameCatalogue = jsonReader.read();

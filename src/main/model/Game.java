@@ -113,6 +113,7 @@ public class Game implements Writable {
                 + "Playing Status: " + stringPlayStatus();
     }
 
+    // EFFECTS: converts the game into a JSONObject
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();

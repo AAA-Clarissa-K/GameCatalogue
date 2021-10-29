@@ -47,7 +47,6 @@ class GameTest {
     }
 
     // getters
-
     @Test
     public void testGetTitle() {
         assertEquals("Marvel's Spider-Man", compGame.getTitle());

@@ -85,6 +85,7 @@ public class GameCatalogue implements Writable {
         return String.join(", ", givenGenre);
     }
 
+    // EFFECTS: converts the game catalogue into a JSONObject
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();

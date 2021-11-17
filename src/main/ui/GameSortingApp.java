@@ -3,6 +3,7 @@ package ui;
 import model.Game;
 import model.GameCatalogue;
 import model.GameGenre;
+import model.PlayStatus;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
@@ -12,122 +13,98 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+import static javafx.application.Platform.exit;
 import static model.GameGenre.*;
 import static model.PlayStatus.*;
 
 // Represents the console interface of a game sorting application
 public class GameSortingApp {
-    private static final String GAME_STORE = "./data/myGameCatalogue.json";
-    private GameCatalogue gameCatalogue;
+    protected static final String GAME_STORE = "./data/myGameCatalogue.json";
+    protected GameCatalogue gameCatalogue;
     private Scanner input;
-    private boolean keepGoing;
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
+    private GameCatalogueUI catalogueUI;
 
     // EFFECTS: runs the game sorting application
-    public GameSortingApp() {
-        runGameSortingApp();
+    public GameSortingApp(GameCatalogueUI catalogueUI) {
+        runGameSortingApp(catalogueUI);
     }
 
     // EFFECTS: processes user input
-    private void runGameSortingApp() {
+    private void runGameSortingApp(GameCatalogueUI catalogueUI) {
 
-        init();
+        init(catalogueUI);
 
-        String command = null;
+        catalogueUI.startTitleScreen();
 
-        displayAskUsername();
+//            command = catalogueUI.submittedText;
 
-        while (keepGoing) {
-            displayMainMenu();
-            command = input.next();
-
-            responseMainMenu(command);
-        }
-        System.out.println("\nGoodbye, " + gameCatalogue.getUsername() + "!  Happy gaming :)");
+//            responseMainMenu(command);
+//        catalogueUI.endMessage();
     }
 
     // MODIFIES: this
-    // EFFECTS: initializes scanner and keepGoing boolean
-    private void init() {
+    // EFFECTS: initializes JsonWriter and JsonReader
+    private void init(GameCatalogueUI catalogueUI) {
+        this.catalogueUI = catalogueUI;
         input = new Scanner(System.in);
         jsonWriter = new JsonWriter(GAME_STORE);
         jsonReader = new JsonReader(GAME_STORE);
         input.useDelimiter("\n");
-        keepGoing = true;
     }
 
-    // MODIFIES: this
-    // EFFECTS: displays prompt for username, initializes catalogue with given username
-    private void displayAskUsername() {
-        System.out.println("\nWhat username would you like?");
-        String name = input.next();
-        while (name.isEmpty()) {
-            System.out.println("\nWhat username would you like?");
-            name = input.next();
-        }
-        gameCatalogue = new GameCatalogue(name);
-    }
-
-
-    // EFFECTS: displays main menu of game catalogue options to user
-    private void displayMainMenu() {
-        System.out.println("\nTo view games, press one of:");
-        System.out.println("1. View all games");
-        System.out.println("2. Search for a game");
-        System.out.println("3. Search by genre");
-        System.out.println("4. Search by playing status");
-        System.out.println("\nTo edit games, press one of:");
-        System.out.println("5. Add a game");
-        System.out.println("6. Change a game's playing status");
-        System.out.println("\nTo save or load games, press one of:");
-        System.out.println("7. Save games to a file");
-        System.out.println("8. Load games from a file");
-        System.out.println("\nTo exit game catalogue, press 0");
-    }
-
-    // EFFECTS: processes user response on main menu
-    private void responseMainMenu(String command) {
-        if (command.equals("1")) {
-            returnGames();
-        } else if (command.equals("2")) {
-            System.out.println("\nWhat game are you looking for?");
-            searchGameDetails();
-        } else if (command.equals("3")) {
-            System.out.println("\nWhich genre are you looking for?");
-            assortValidGenre();
-        } else if (command.equals("4")) {
-            assortValidPlayStatus();
-        } else if (command.equals("5")) {
-            displayGamePrompt();
-        } else if (command.equals("6")) {
-            searchGameToChangeStatus();
-        } else if (command.equals("7")) {
-            saveGameCatalogue();
-        } else if (command.equals("8")) {
-            loadGameCatalogue();
-        } else if (command.equals("0")) {
-            keepGoing = false;
-        }  else {
-            System.out.println("\nInvalid input, please choose a number from 0 to 6.");
-        }
-    }
-
-    private void returnGames() {
-        if (gameCatalogue.getAllGameTitles().isEmpty()) {
-            System.out.println("\nThere are no games in your game catalogue.");
-        }
-        System.out.println(gameCatalogue.getAllGameTitles());
-    }
+//    // EFFECTS: displays main menu of game catalogue options to user
+//    private void displayMainMenu() {
+//        System.out.println("\nTo view games, press one of:");
+//        System.out.println("1. View all games");
+//        System.out.println("2. Search for a game");
+//        System.out.println("3. Search by genre");
+//        System.out.println("4. Search by playing status");
+//        System.out.println("\nTo edit games, press one of:");
+//        System.out.println("5. Add a game");
+//        System.out.println("6. Change a game's playing status");
+//        System.out.println("\nTo save or load games, press one of:");
+//        System.out.println("7. Save games to a file");
+//        System.out.println("8. Load games from a file");
+//        System.out.println("\nTo exit game catalogue, press 0");
+//    }
+//
+//    // EFFECTS: processes user response on main menu
+//    private void responseMainMenu(String command) {
+//        if (command.equals("1")) {
+//            returnGames();
+//        } else if (command.equals("2")) {
+//            System.out.println("\nWhat game are you looking for?");
+//            searchGameDetails();
+//        } else if (command.equals("3")) {
+//            System.out.println("\nWhich genre are you looking for?");
+//            assortValidGenre();
+//        } else if (command.equals("4")) {
+//            assortValidPlayStatus();
+//        } else if (command.equals("5")) {
+//            displayGamePrompt();
+//        } else if (command.equals("6")) {
+//            searchGameToChangeStatus();
+//        } else if (command.equals("7")) {
+//            saveGameCatalogue();
+//        } else if (command.equals("8")) {
+//            loadGameCatalogue();
+//        } else if (command.equals("0")) {
+//            exit();
+//        }  else {
+//            System.out.println("\nInvalid input, please choose a number from 0 to 6.");
+//        }
+//    }
 
     // EFFECTS: returns game details if there is a game with the matching string title,
     //          if getting game produces null, says game title can't be found
-    private void searchGameDetails() {
-        String targetGame = input.next();
+    protected void searchGameDetails(String targetGame) {
         if (gameCatalogue.getGame(targetGame) == null) {
-            System.out.println("\nGame with this title couldn't be found...");
+            catalogueUI.message("Game with this title couldn't be found...", "No Game Found",
+                    "plain");
         } else {
-            System.out.println(gameCatalogue.getGame(targetGame).getGameDetails());
+            catalogueUI.createGameDetailPage(gameCatalogue.getGame(targetGame));
         }
     }
 
@@ -153,7 +130,6 @@ public class GameSortingApp {
             } else {
                 System.out.println(gameCatalogue.assortByGenre(givenGenre));
             }
-
         }
     }
 
@@ -176,24 +152,6 @@ public class GameSortingApp {
                 System.out.println(gameCatalogue.assortByPlayStatus(givenPlayStatus));
             }
         }
-    }
-
-    // EFFECTS: displays prompts for game details to create the game and add it to the catalogue
-    private void displayGamePrompt() {
-        System.out.println("\nWhat's the name of the game?");
-        String gameName = input.next();
-        System.out.println("\nWho developed the game?");
-        String gameDevName = input.next();
-        GameGenre genre = askGenre();
-        System.out.println("\nWhat platforms can you play this on? Please separate with commas.");
-        List<String> gameAllPlatforms = Arrays.asList(input.next().split(","));
-        int gameYear = askValidYear();
-        Game newGame = new Game(gameName, gameDevName, genre, gameAllPlatforms, gameYear, PLAN_TO_PLAY);
-        System.out.println("\nWhat is its playing status? Please type one of:");
-        String initialPlayStatus = askValidPlayStatus();
-        newGame.setPlayStatus(initialPlayStatus);
-        gameCatalogue.addGame(newGame);
-        System.out.println("\nThis game has just been added into your catalogue.");
     }
 
     // EFFECTS: returns GameGenre to corresponding string input
@@ -238,20 +196,6 @@ public class GameSortingApp {
         return givenGenre;
     }
 
-    // EFFECTS: if given string contains integer, returns it as the year, otherwise returns invalid message
-    //          and prompts for another attempt.
-    private int askValidYear() {
-        System.out.println("\nWhat year was this game released?");
-        while (true) {
-            String givenYear = input.next();
-            try {
-                return Integer.parseInt(givenYear);
-            } catch (Exception e) {
-                System.out.println("Not a number, please enter a year.");
-            }
-        }
-    }
-
     // EFFECTS: returns given play status string if valid, if invalid, asks for another play status attempt
     private String askValidPlayStatus() {
         System.out.println("- Completed");
@@ -267,55 +211,39 @@ public class GameSortingApp {
         return initialPlayStatus;
     }
 
-    // EFFECTS: prompts to search for a game to change the playing status
-    private void searchGameToChangeStatus() {
-        System.out.println("\nWhich game would you like to change?");
-        Game gameToChange = gameCatalogue.getGame(input.next());
-        if (gameToChange == null) {
-            System.out.println("\nGame not found in catalogue");
-        } else {
-            System.out.println("\nWhat is its new playing status?");
-            changeValidGamePlayStatus(gameToChange);
-        }
-    }
-
-    // EFFECTS: changes game play status if play status typed in is valid, if invalid,
-    //          prompts for another attempt
-    private void changeValidGamePlayStatus(Game gameToChange) {
-        System.out.println("- Completed");
-        System.out.println("- Currently playing");
-        System.out.println("- On hold");
-        System.out.println("- Plan to play");
-        String givenPlayStatus = input.next().toLowerCase();
-        if (!(givenPlayStatus.equals("completed") || givenPlayStatus.equals("currently playing")
-                || givenPlayStatus.equals("on hold") || givenPlayStatus.equals("plan to play"))) {
-            System.out.println("Invalid play status, please try one of the valid ones below.");
-            changeValidGamePlayStatus(gameToChange);
-        } else {
-            gameToChange.setPlayStatus(givenPlayStatus);
-        }
-    }
-
     // EFFECTS: saves the game catalogue to file
-    private void saveGameCatalogue() {
+    protected void saveGameCatalogue() {
         try {
             jsonWriter.open();
             jsonWriter.write(gameCatalogue);
             jsonWriter.close();
-            System.out.println("Saved " + gameCatalogue.getUsername() + "'s games to " + GAME_STORE);
+            String saveMessage = "Saved " + gameCatalogue.getUsername() + "'s games to " + GAME_STORE;
+            catalogueUI.message(saveMessage, "Saved File", "plain");
         } catch (FileNotFoundException e) {
-            System.out.println("Unable to write to file: " + GAME_STORE);
+            String errorMessage = "Unable to write to file: " + GAME_STORE;
+            catalogueUI.message(errorMessage, "File Not Found", "error");
         }
     }
 
     // MODIFIES: this
     // EFFECTS: loads game catalogue from file
-    private void loadGameCatalogue() {
+    protected void loadGameCatalogue(String currentName) {
         try {
             gameCatalogue = jsonReader.read();
-            System.out.println("Loaded previous player's games from " + GAME_STORE);
+            if (gameCatalogue.getAllGames().isEmpty()) {
+                catalogueUI.message("There are no games to be loaded", "Empty Load FIle", "plain");
+            } else {
+                String loadMessage = "Loaded " + gameCatalogue.getUsername() + "'s games from previous" + GAME_STORE;
+                gameCatalogue.changeUsername(currentName);
+                catalogueUI.message(loadMessage, "Loaded File", "plain");
+            }
         } catch (IOException e) {
-            System.out.println("Unable to read from file: " + GAME_STORE);
+            String unreadableMessage = "Unable to read from file: " + GAME_STORE;
+            catalogueUI.message(unreadableMessage, "Unreadable File", "error");
         }
+    }
+
+    protected void exitProgram() {
+        exit();
     }
 }

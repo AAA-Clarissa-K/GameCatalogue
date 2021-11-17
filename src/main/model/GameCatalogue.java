@@ -23,6 +23,12 @@ public class GameCatalogue implements Writable {
         return username;
     }
 
+    // MODIFIES: this
+    // EFFECTS: changes username of catalogue
+    public void changeUsername(String newUsername) {
+        username = newUsername;
+    }
+
     // EFFECTS: returns the game with the given string title, otherwise returns null
     public Game getGame(String name) {
         for (Game g: allGames) {

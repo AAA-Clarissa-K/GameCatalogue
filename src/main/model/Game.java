@@ -53,7 +53,7 @@ public class Game implements Writable {
         return playStatus;
     }
 
-    // REQUIRES: string input is one of: "completed", "currently playing", "on hold", "plan to play"
+    // REQUIRES: string input is lowercase, one of: "completed", "currently playing", "on hold", "plan to play"
     // MODIFIES: this
     // EFFECTS: changes a game's playing status to another playing status based on its assigned string
     public void setPlayStatus(String ps) {

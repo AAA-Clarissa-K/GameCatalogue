@@ -84,6 +84,14 @@ public class GameCatalogueTest {
         assertEquals(compGame, myGameCatalogue.getGame("Marvel's Spider-Man"));
     }
 
+    @Test
+    // Change username
+    public void testChangeUsername() {
+        assertEquals("Clarissa", myGameCatalogue.getUsername());
+        myGameCatalogue.changeUsername("Kris");
+        assertEquals("Kris", myGameCatalogue.getUsername());
+    }
+
     // Adding a game
     @Test
     public void testAddGameToEmpty() {

@@ -19,7 +19,7 @@ status on that game.  I hope for the user to be able to view games through diffe
 ## User Stories
 
 For my game catalogue:
-- As a user, I want to be able to add games to the catalogue's list of games
+- As a user, I want to be able to add multiple games to the catalogue's list of games
 - As a user, I want to be able to view the game titles in the catalogue
 - As a user, I want to be able to view game titles based on their playing status, and genre
 - As a user, I want to be able to search for a game title and view the details of the game

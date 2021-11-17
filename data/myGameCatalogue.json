@@ -1,4 +1,21 @@
 {
-    "games": [],
-    "username": "Clarissa"
+    "games": [
+        {
+            "year": 2013,
+            "play status": "COMPLETED",
+            "genre": "RPG",
+            "developer": "Me :)",
+            "title": "Test",
+            "platform": "PlayStation"
+        },
+        {
+            "year": 2013,
+            "play status": "CURRENTLY_PLAYING",
+            "genre": "RPG",
+            "developer": "Me :)",
+            "title": "Test 2",
+            "platform": "PlayStation"
+        }
+    ],
+    "username": "Clank"
 }

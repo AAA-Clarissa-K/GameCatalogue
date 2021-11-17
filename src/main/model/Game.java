@@ -63,7 +63,7 @@ public class Game implements Writable {
             playStatus = CURRENTLY_PLAYING;
         } else if (ps.equals("on hold")) {
             playStatus = ON_HOLD;
-        } else if (ps.equals("plan to play")) {
+        } else {
             playStatus = PLAN_TO_PLAY;  // last possible string input given requires restriction
         }
     }

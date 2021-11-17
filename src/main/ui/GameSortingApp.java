@@ -1,21 +1,16 @@
 package ui;
 
-import model.Game;
 import model.GameCatalogue;
 import model.GameGenre;
-import model.PlayStatus;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
 
 import static javafx.application.Platform.exit;
 import static model.GameGenre.*;
-import static model.PlayStatus.*;
 
 // Represents the console interface of a game sorting application
 public class GameSortingApp {
@@ -37,11 +32,6 @@ public class GameSortingApp {
         init(catalogueUI);
 
         catalogueUI.startTitleScreen();
-
-//            command = catalogueUI.submittedText;
-
-//            responseMainMenu(command);
-//        catalogueUI.endMessage();
     }
 
     // MODIFIES: this
@@ -54,49 +44,6 @@ public class GameSortingApp {
         input.useDelimiter("\n");
     }
 
-//    // EFFECTS: displays main menu of game catalogue options to user
-//    private void displayMainMenu() {
-//        System.out.println("\nTo view games, press one of:");
-//        System.out.println("1. View all games");
-//        System.out.println("2. Search for a game");
-//        System.out.println("3. Search by genre");
-//        System.out.println("4. Search by playing status");
-//        System.out.println("\nTo edit games, press one of:");
-//        System.out.println("5. Add a game");
-//        System.out.println("6. Change a game's playing status");
-//        System.out.println("\nTo save or load games, press one of:");
-//        System.out.println("7. Save games to a file");
-//        System.out.println("8. Load games from a file");
-//        System.out.println("\nTo exit game catalogue, press 0");
-//    }
-//
-//    // EFFECTS: processes user response on main menu
-//    private void responseMainMenu(String command) {
-//        if (command.equals("1")) {
-//            returnGames();
-//        } else if (command.equals("2")) {
-//            System.out.println("\nWhat game are you looking for?");
-//            searchGameDetails();
-//        } else if (command.equals("3")) {
-//            System.out.println("\nWhich genre are you looking for?");
-//            assortValidGenre();
-//        } else if (command.equals("4")) {
-//            assortValidPlayStatus();
-//        } else if (command.equals("5")) {
-//            displayGamePrompt();
-//        } else if (command.equals("6")) {
-//            searchGameToChangeStatus();
-//        } else if (command.equals("7")) {
-//            saveGameCatalogue();
-//        } else if (command.equals("8")) {
-//            loadGameCatalogue();
-//        } else if (command.equals("0")) {
-//            exit();
-//        }  else {
-//            System.out.println("\nInvalid input, please choose a number from 0 to 6.");
-//        }
-//    }
-
     // EFFECTS: returns game details if there is a game with the matching string title,
     //          if getting game produces null, says game title can't be found
     protected void searchGameDetails(String targetGame) {
@@ -105,52 +52,6 @@ public class GameSortingApp {
                     "plain");
         } else {
             catalogueUI.createGameDetailPage(gameCatalogue.getGame(targetGame));
-        }
-    }
-
-    // EFFECTS: processes user input to search by genre if the given genre is valid,
-    //          if invalid, prompts for another attempt
-    private void assortValidGenre() {
-        System.out.println("- FPS");
-        System.out.println("- RPG");
-        System.out.println("- Adventure");
-        System.out.println("- Puzzle");
-        System.out.println("- Horror");
-        System.out.println("- Simulation");
-        System.out.println("- Platformer");
-        String givenGenre = input.next().toLowerCase();
-        if (!(givenGenre.equals("fps") || givenGenre.equals("rpg") || givenGenre.equals("adventure")
-                || givenGenre.equals("puzzle") || givenGenre.equals("horror") || givenGenre.equals("simulation")
-                || givenGenre.equals("platformer"))) {
-            System.out.println("Invalid game genre, please try an available genre below.");
-            assortValidGenre();
-        } else {
-            if (gameCatalogue.assortByGenre(givenGenre).isEmpty()) {
-                System.out.println("You have no games in this genre.");
-            } else {
-                System.out.println(gameCatalogue.assortByGenre(givenGenre));
-            }
-        }
-    }
-
-    // EFFECTS: processes user input to search by play status if given play status is valid,
-    //          if invalid, prompts for another attempt
-    private void assortValidPlayStatus() {
-        System.out.println("- Completed");
-        System.out.println("- Currently playing");
-        System.out.println("- On hold");
-        System.out.println("- Plan to play");
-        String givenPlayStatus = input.next().toLowerCase();
-        if (!(givenPlayStatus.equals("completed") || givenPlayStatus.equals("currently playing")
-                || givenPlayStatus.equals("on hold") || givenPlayStatus.equals("plan to play"))) {
-            System.out.println("Invalid play status, please try one of the valid ones below.");
-            assortValidPlayStatus();
-        } else {
-            if (gameCatalogue.assortByPlayStatus(givenPlayStatus).isEmpty()) {
-                System.out.println("\nYou have no games with this play status.");
-            } else {
-                System.out.println(gameCatalogue.assortByPlayStatus(givenPlayStatus));
-            }
         }
     }
 
@@ -241,9 +142,5 @@ public class GameSortingApp {
             String unreadableMessage = "Unable to read from file: " + GAME_STORE;
             catalogueUI.message(unreadableMessage, "Unreadable File", "error");
         }
-    }
-
-    protected void exitProgram() {
-        exit();
     }
 }

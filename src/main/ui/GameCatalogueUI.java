@@ -7,11 +7,11 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Locale;
 
 import static model.GameGenre.*;
 import static model.PlayStatus.*;
 
+// Represents a game catalogue UI that consists of a main JFrame as well as next JFrames, JButtons and JTextFields
 public class GameCatalogueUI extends JFrame {
     private static final int WIDTH = 1000;
     private static final int HEIGHT = 800;
@@ -70,9 +70,10 @@ public class GameCatalogueUI extends JFrame {
     private Game intendedGame;
     private JPanel gameTitlePanel;
     private JFrame searchGameFrame;
-    private JLabel searchLabel;
     private JTextField searchGameField;
     private JButton toggleGameSearch;
+    private JButton toggleGenreSearch;
+    private JButton toggleStatusSearch;
     private JFrame inputStatusPage;
     private JFrame changeStatusPage;
     private JButton searchGameForStatus;
@@ -93,7 +94,7 @@ public class GameCatalogueUI extends JFrame {
     }
 
     protected void initComponents() {
-        titleLabel = new FormattedLabel("Welcome to your Game Catalogue",MAIN_TITLE_FONT);
+        titleLabel = formattedLabel("Welcome to your Game Catalogue",MAIN_TITLE_FONT);
         banner = new ImageIcon("src/Banner.jpg");
         banner2 = new ImageIcon("src/banner2.jpg");
         gameImage = new ImageIcon("src/gameCover.jpg");
@@ -110,12 +111,11 @@ public class GameCatalogueUI extends JFrame {
 
         intendedGame = null;
         searchGameFrame = new JFrame("Search Game");
-        searchLabel = new JLabel();
-        searchGameFrame.setSize(WIDTH / 2, HEIGHT / 5);
-        searchLabel = new FormattedLabel("  What game are you looking for?", TITLE_FONT);
-        searchGameFrame.add(searchLabel);
+        searchGameFrame.setSize(WIDTH / 2, HEIGHT / 4);
         searchGameField = new JTextField(20);
         toggleGameSearch = new SubmitButton();
+        toggleGenreSearch = new SubmitButton();
+        toggleStatusSearch = new SubmitButton();
         initChangeStatusComponents();
         gamePage = new JFrame();
     }
@@ -125,13 +125,13 @@ public class GameCatalogueUI extends JFrame {
         inputStatusPage.setSize(WIDTH / 3, HEIGHT / 3);
         inputStatusPage.getContentPane().setBackground(BACKGROUND_COLOUR);
         inputStatusPage.setLayout(new GridLayout(0,1));
-        JLabel inputStatusPrompt = new FormattedLabel("What playing status is this game?", TITLE_FONT);
+        JLabel inputStatusPrompt = formattedLabel("What playing status is this game?", TITLE_FONT);
         inputStatusPrompt.setHorizontalAlignment(JLabel.CENTER);
         inputStatusPage.add(inputStatusPrompt);
 
         changeStatusPage = new JFrame();
         changeStatusPage.setLayout(new GridLayout(0,1));
-        JLabel changeStatusPrompt = new FormattedLabel("  Which game would you like to change?", TITLE_FONT);
+        JLabel changeStatusPrompt = formattedLabel("  Which game would you like to change?", TITLE_FONT);
         changeStatusPage.add(changeStatusPrompt);
         searchGameForStatus = new SubmitButton();
         submitChange = new SubmitButton();
@@ -139,18 +139,18 @@ public class GameCatalogueUI extends JFrame {
 
     // EFFECTS: initializes main menu components
     private void initMainMenuComponents() {
-        viewLabel = new FormattedLabel("  To view games:", TITLE_FONT);
+        viewLabel = formattedLabel("  To view games:", TITLE_FONT);
         viewGames = new MainMenuButton("View all games");
         searchGame = new MainMenuButton("Search for a game");
         searchGenre = new MainMenuButton("Search by genre");
         searchStatus = new MainMenuButton("Search by playing status");
-        editGames = new FormattedLabel("  To edit games:",TITLE_FONT);
+        editGames = formattedLabel("  To edit games:",TITLE_FONT);
         addGame = new MainMenuButton("Add a game");
         changeStatus = new MainMenuButton("Change a game's playing status");
-        saveLoadGame = new FormattedLabel("  To save or load games:",TITLE_FONT);
+        saveLoadGame = formattedLabel("  To save or load games:",TITLE_FONT);
         saveGame = new MainMenuButton("Save games to a file");
         loadGame = new MainMenuButton("Load games from a file");
-        exitLabel = new FormattedLabel("  To exit game catalogue",TITLE_FONT);
+        exitLabel = formattedLabel("  To exit game catalogue",TITLE_FONT);
         exitButton = new MainMenuButton("Exit game catalogue");
     }
 
@@ -213,7 +213,7 @@ public class GameCatalogueUI extends JFrame {
 
         String catalogueName = gameCatalogueApp.gameCatalogue.getUsername() + "'s Game Catalogue";
 
-        titleLabel = new FormattedLabel(catalogueName, MAIN_TITLE_FONT);
+        titleLabel = formattedLabel(catalogueName, MAIN_TITLE_FONT);
         titleLabel.setIcon(banner);
         titleLabel.setHorizontalTextPosition(JLabel.CENTER);
         titleLabel.setVerticalTextPosition(JLabel.BOTTOM);
@@ -229,6 +229,7 @@ public class GameCatalogueUI extends JFrame {
         setVisible(true);
     }
 
+    // EFFECTS: adds main menu components to the JPanel
     private JPanel createMainMenu(JPanel menu) {
         menu.add(viewLabel);
         menu.add(viewGames);
@@ -243,45 +244,8 @@ public class GameCatalogueUI extends JFrame {
         menu.add(loadGame);
         menu.add(exitLabel);
         menu.add(exitButton);
-
         return menu;
     }
-    
-//    // EFFECTS: returns game details if there is a game with the matching string title,
-//    //          if getting game produces null, says game title can't be found
-//    private void searchGameDetails() {
-//        String targetGame = input.next();
-//        if (gameCatalogue.getGame(targetGame) == null) {
-//            errorPopup("Game with this title couldn't be found...", "Game Not Found");
-//        } else {
-//            System.out.println(gameCatalogue.getGame(targetGame).getGameDetails());
-//        }
-//    }
-//
-//    // EFFECTS: processes user input to search by genre if the given genre is valid,
-//    //          if invalid, prompts for another attempt
-//    private void assortValidGenre() {
-//        System.out.println("- FPS");
-//        System.out.println("- RPG");
-//        System.out.println("- Adventure");
-//        System.out.println("- Puzzle");
-//        System.out.println("- Horror");
-//        System.out.println("- Simulation");
-//        System.out.println("- Platformer");
-//        String givenGenre = input.next().toLowerCase();
-//        if (!(givenGenre.equals("fps") || givenGenre.equals("rpg") || givenGenre.equals("adventure")
-//                || givenGenre.equals("puzzle") || givenGenre.equals("horror") || givenGenre.equals("simulation")
-//                || givenGenre.equals("platformer"))) {
-//            System.out.println("Invalid game genre, please try an available genre below.");
-//            assortValidGenre();
-//        } else {
-//            if (gameCatalogue.assortByGenre(givenGenre).isEmpty()) {
-//                System.out.println("You have no games in this genre.");
-//            } else {
-//                System.out.println(gameCatalogue.assortByGenre(givenGenre));
-//            }
-//        }
-//    }
 
     // Represents the username submit button
     private class UsernameButton extends JButton implements ActionListener {
@@ -334,7 +298,7 @@ public class GameCatalogueUI extends JFrame {
             } else if (e.getSource() == exitButton) {
                 endMessage();
                 dispose();
-                gameCatalogueApp.exitProgram();
+                System.exit(0);
             }
         }
 
@@ -351,13 +315,25 @@ public class GameCatalogueUI extends JFrame {
         }
     }
 
+    // EFFECTS: creates search page
     private void createSearchPage(JButton command) {
+        searchGameFrame = new JFrame("Game Search");
+        searchGameFrame.setSize(WIDTH / 2, HEIGHT / 5);
         searchGameFrame.getContentPane().setBackground(BACKGROUND_COLOUR);
         searchGameFrame.setVisible(true);
         searchGameFrame.setLayout(new GridLayout(0,1));
         if (command.equals(searchGame)) {
+            searchGameFrame.add(formattedLabel("  What game are you looking for?", TITLE_FONT));
             searchGameFrame.add(searchGameField);
             searchGameFrame.add(toggleGameSearch);
+        } else if (command.equals(searchGenre)) {
+            searchGameFrame.add(formattedLabel("  Which genre are you looking for?", TITLE_FONT));
+            searchGameFrame.add(createGenrePanel());
+            searchGameFrame.add(toggleGenreSearch);
+        } else if (command.equals(searchStatus)) {
+            searchGameFrame.add(formattedLabel("  Which play status are you looking for?", TITLE_FONT));
+            searchGameFrame.add(createStatusPanel());
+            searchGameFrame.add(toggleStatusSearch);
         }
     }
 
@@ -382,17 +358,17 @@ public class GameCatalogueUI extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             Game searchGame = gameCatalogueApp.gameCatalogue.getGame(searchGameField.getText());
-            if (searchGameField.getText().isEmpty() || searchGame == null) {
-                message("No such game was found in your catalogue", "Game Not Found", "plain");
-            } else if (e.getSource() == toggleGameSearch) {
+            if (e.getSource() == toggleGameSearch) {
+                searchGameMethod(searchGame);
+            } else if (e.getSource() == toggleGenreSearch) {
                 searchGameFrame.dispose();
-                gameCatalogueApp.searchGameDetails(searchGameField.getText());
+                showGameOfGenre();
+            } else if (e.getSource() == toggleStatusSearch) {
+                searchGameFrame.dispose();
+                showGameOfStatus();
             } else if (e.getSource() == searchGameForStatus) {
                 changeStatusPage.dispose();
-                intendedGame = gameCatalogueApp.gameCatalogue.getGame(searchGameField.getText());
-                inputStatusPage.add(createStatusPanel());
-                inputStatusPage.add(submitChange);
-                inputStatusPage.setVisible(true);
+                inputStatusChangePage();
             } else if (e.getSource() == submitChange) {
                 inputStatusPage.dispose();
                 gameCatalogueApp.gameCatalogue.getGame(intendedGame.getTitle()).setPlayStatus(
@@ -404,12 +380,58 @@ public class GameCatalogueUI extends JFrame {
         }
     }
 
+    private void searchGameMethod(Game searchGame) {
+        if (searchGameField.getText().isEmpty() || searchGame == null) {
+            message("No such game was found in your catalogue", "Game Not Found", "plain");
+        } else {
+            searchGameFrame.dispose();
+            gameCatalogueApp.searchGameDetails(searchGameField.getText());
+        }
+    }
+
+    // EFFECTS: filters games by genre and displays them
+    private void showGameOfGenre() {
+        String genreGamesList = gameCatalogueApp.gameCatalogue.assortByGenre(
+                String.valueOf(genreButtonOutput).toLowerCase());
+        ArrayList<String> finalGenreGames = new ArrayList(Arrays.asList(genreGamesList.split(", ")));
+        if (genreGamesList.isEmpty()) {
+            message("No game with this genre was found", "None found", "plain");
+        } else {
+            String pageTitle = "All " + genreButtonOutput + " Games";
+            showGamePage(pageTitle, finalGenreGames);
+            genreButtonOutput = null;
+        }
+    }
+
+    // EFFECTS: filters games by play status and displays them
+    private void showGameOfStatus() {
+        String statusGamesList = gameCatalogueApp.gameCatalogue.assortByPlayStatus(
+                String.valueOf(statusButtonOutput).toLowerCase().replace("_"," "));
+        ArrayList<String> finalStatusGames = new ArrayList(Arrays.asList(statusGamesList.split(", ")));
+        if (statusGamesList.isEmpty()) {
+            message("No game with this play status was found", "None found", "plain");
+        } else {
+            String pageTitle = "All " + String.valueOf(statusButtonOutput).replace("_"," ")
+                    + " Games";
+            showGamePage(pageTitle, finalStatusGames);
+            statusButtonOutput = null;
+        }
+    }
+
+    // EFFECTS: creates input status change page
+    private void inputStatusChangePage() {
+        intendedGame = gameCatalogueApp.gameCatalogue.getGame(searchGameField.getText());
+        inputStatusPage.add(createStatusPanel());
+        inputStatusPage.add(submitChange);
+        inputStatusPage.setVisible(true);
+    }
+
     // EFFECTS: creates game detail page
     protected void createGameDetailPage(Game searchGame) {
         JFrame gameDetailFrame = new JFrame("Game Details");
         gameDetailFrame.getContentPane().setBackground(BACKGROUND_COLOUR);
         gameDetailFrame.setSize(250,400);
-        JLabel gameDetail = new FormattedLabel("Details of this Game", MAIN_TITLE_FONT);
+        JLabel gameDetail = formattedLabel("Details of this Game", MAIN_TITLE_FONT);
         gameDetail.setIcon(gameImage);
         gameDetail.setHorizontalTextPosition(JLabel.CENTER);
         gameDetail.setVerticalTextPosition(JLabel.TOP);
@@ -422,29 +444,30 @@ public class GameCatalogueUI extends JFrame {
         gameDetailFrame.setVisible(true);
     }
 
+    // EFFECTS: creates the detail panel to show game details
     private JPanel createDetailPanel(Game searchGame) {
         JPanel detailPanel = new JPanel(new GridLayout(0,2));
         detailPanel.setBackground(BACKGROUND_COLOUR);
-        JLabel title = new FormattedLabel("Title: ", TITLE_FONT);
-        JLabel gameTitle = new FormattedLabel(searchGame.getTitle(), REG_FONT);
-        JLabel dev = new FormattedLabel("Developed by: ", TITLE_FONT);
-        JLabel gameDev = new FormattedLabel(searchGame.getDeveloper(), REG_FONT);
-        JLabel genre = new FormattedLabel("Genre: ", TITLE_FONT);
-        JLabel gameGenre = new FormattedLabel(searchGame.stringGenre(), REG_FONT);
-        JLabel platform = new FormattedLabel("Platform(s): ", TITLE_FONT);
+        JLabel title = formattedLabel("Title: ", TITLE_FONT);
+        JLabel gameTitle = formattedLabel(searchGame.getTitle(), REG_FONT);
+        JLabel dev = formattedLabel("Developed by: ", TITLE_FONT);
+        JLabel gameDev = formattedLabel(searchGame.getDeveloper(), REG_FONT);
+        JLabel genre = formattedLabel("Genre: ", TITLE_FONT);
+        JLabel gameGenre = formattedLabel(searchGame.stringGenre(), REG_FONT);
+        JLabel platform = formattedLabel("Platform(s): ", TITLE_FONT);
         String compiledPlat = String.join(", ", searchGame.getPlatform());
-        JLabel gamePlat = new FormattedLabel(compiledPlat, REG_FONT);
-        JLabel year = new FormattedLabel("Year: ", TITLE_FONT);
-        JLabel gameYear = new FormattedLabel(String.valueOf(searchGame.getYear()), REG_FONT);
-        JLabel status = new FormattedLabel("Playing Status: ", TITLE_FONT);
-        JLabel gameStatus = new FormattedLabel(searchGame.stringPlayStatus(), REG_FONT);
+        JLabel gamePlat = formattedLabel(compiledPlat, REG_FONT);
+        JLabel year = formattedLabel("Year: ", TITLE_FONT);
+        JLabel gameYear = formattedLabel(String.valueOf(searchGame.getYear()), REG_FONT);
+        JLabel status = formattedLabel("Playing Status: ", TITLE_FONT);
+        JLabel gameStatus = formattedLabel(searchGame.stringPlayStatus(), REG_FONT);
 
         addDetailComponents(detailPanel, title, gameTitle, dev, gameDev, genre, gameGenre, platform, gamePlat,
                 year, gameYear, status, gameStatus);
-
         return detailPanel;
     }
 
+    // EFFECTS: adds game detail components to the JPanel
     private void addDetailComponents(JPanel detailPanel, JLabel title, JLabel gameTitle, JLabel dev, JLabel gameDev,
                                      JLabel genre, JLabel gameGenre, JLabel platform, JLabel gamePlat, JLabel year,
                                      JLabel gameYear, JLabel status, JLabel gameStatus) {
@@ -467,17 +490,16 @@ public class GameCatalogueUI extends JFrame {
         if (gameCatalogueApp.gameCatalogue.getAllGameTitles().isEmpty()) {
             message("There are no games in your game catalogue.", "Empty Catalogue", "plain");
         } else {
-            String gameCombined = gameCatalogueApp.gameCatalogue.getAllGameTitles();
-            ArrayList<String> gameTitles = new ArrayList(Arrays.asList(gameCombined.split(", ")));
-
             if (command.equals(viewGames)) {
+                String gameCombined = gameCatalogueApp.gameCatalogue.getAllGameTitles();
+                ArrayList<String> gameTitles = new ArrayList(Arrays.asList(gameCombined.split(", ")));
                 showGamePage("All Games on File", gameTitles);
             } else if (command.equals(searchGame)) {
                 createSearchPage(searchGame);
             } else if (command.equals(searchGenre)) {
-//            searchGame("genre");
+                createSearchPage(searchGenre);
             } else if (command.equals(searchStatus)) {
-//                searchGame("status");
+                createSearchPage(searchStatus);
             } else if (command.equals(changeStatus)) {
                 changeStatusPage();
             }
@@ -486,17 +508,19 @@ public class GameCatalogueUI extends JFrame {
 
     // EFFECTS: shows game page of game titles and cover template
     protected void showGamePage(String title, ArrayList<String> gameTitles) {
+        gamePage = new JFrame();
         gamePage.setSize(WIDTH,HEIGHT / 2);
         gamePage.getContentPane().setBackground(BACKGROUND_COLOUR);
+        gameTitlePanel = new JPanel(new GridLayout(0,5));
         gameTitlePanel.setBackground(BACKGROUND_COLOUR);
-        titleLabel = new FormattedLabel(title, MAIN_TITLE_FONT);
+        titleLabel = formattedLabel(title, MAIN_TITLE_FONT);
         titleLabel.setForeground(Color.WHITE);
         titleLabel.setIcon(banner2);
         titleLabel.setHorizontalTextPosition(JLabel.CENTER);
         titleLabel.setVerticalTextPosition(JLabel.CENTER);
         gamePage.add(titleLabel, BorderLayout.NORTH);
         for (String gameName: gameTitles) {
-            JLabel game = new FormattedLabel(gameName,TITLE_FONT);
+            JLabel game = formattedLabel(gameName,TITLE_FONT);
             game.setIcon(gameImage);
             game.setHorizontalTextPosition(JLabel.CENTER);
             game.setVerticalTextPosition(JLabel.BOTTOM);
@@ -508,12 +532,13 @@ public class GameCatalogueUI extends JFrame {
         gamePage.setVisible(true);
     }
 
+    // EFFECTS: displays page for adding games
     private void addGamePage() {
         addGamePage = new JFrame();
         addGamePage.setSize(WIDTH / 3 * 2,HEIGHT / 3 * 2);
         addGamePage.getContentPane().setBackground(BACKGROUND_COLOUR);
         addGamePage.setLayout(new GridLayout(0,1));
-        JLabel addGamePageTitle = new FormattedLabel("Add a Game", MAIN_TITLE_FONT);
+        JLabel addGamePageTitle = formattedLabel("Add a Game", MAIN_TITLE_FONT);
         addGamePageTitle.setHorizontalAlignment(JLabel.CENTER); // in relation to the label
         addGamePageTitle.setVerticalAlignment(JLabel.CENTER);
         addGamePage.add(addGamePageTitle);
@@ -523,24 +548,24 @@ public class GameCatalogueUI extends JFrame {
 
     // EFFECTS: creates game prompt components
     private void gamePromptComponents() {
-        JLabel titlePrompt = new FormattedLabel("  What's the name of the game?", TITLE_FONT);
+        JLabel titlePrompt = formattedLabel("  What's the name of the game?", TITLE_FONT);
         addGamePage.add(titlePrompt);
         addGamePage.add(gameTitleField);
-        JLabel devPrompt = new FormattedLabel("  Who developed the game?", TITLE_FONT);
+        JLabel devPrompt = formattedLabel("  Who developed the game?", TITLE_FONT);
         addGamePage.add(devPrompt);
         addGamePage.add(gameDevField);
-        JLabel genrePrompt = new FormattedLabel("  What is the game genre?", TITLE_FONT);
+        JLabel genrePrompt = formattedLabel("  What is the game genre?", TITLE_FONT);
         JPanel genrePanel = createGenrePanel();
         addGamePage.add(genrePrompt);
         addGamePage.add(genrePanel);
-        JLabel platformPrompt = new FormattedLabel(
+        JLabel platformPrompt = formattedLabel(
                 "  What platforms can you play this on? Please separate with commas.", TITLE_FONT);
         addGamePage.add(platformPrompt);
         addGamePage.add(gamePlatformField);
-        JLabel yearPrompt = new FormattedLabel("  Which year was it released?", TITLE_FONT);
+        JLabel yearPrompt = formattedLabel("  Which year was it released?", TITLE_FONT);
         addGamePage.add(yearPrompt);
         addGamePage.add(gameYearField);
-        JLabel statusPrompt = new FormattedLabel("  What is its playing status?", TITLE_FONT);
+        JLabel statusPrompt = formattedLabel("  What is its playing status?", TITLE_FONT);
         JPanel statusPanel = createStatusPanel();
         addGamePage.add(statusPrompt);
         addGamePage.add(statusPanel);
@@ -582,6 +607,7 @@ public class GameCatalogueUI extends JFrame {
         }
     }
 
+    // EFFECTS: creates panel with genre buttons
     private JPanel createGenrePanel() {
         JPanel genrePanel = new JPanel();
         genrePanel.setBackground(BACKGROUND_COLOUR);
@@ -596,7 +622,7 @@ public class GameCatalogueUI extends JFrame {
         return genrePanel;
     }
 
-    // Represents submit game button and functions
+    // Represents the buttons to input genres
     private class GenreButton extends JButton implements ActionListener {
 
         GenreButton(String option) {
@@ -625,6 +651,7 @@ public class GameCatalogueUI extends JFrame {
         }
     }
 
+    // creates panel with play status panels
     private JPanel createStatusPanel() {
         JPanel statusPanel = new JPanel();
         statusPanel.setBackground(BACKGROUND_COLOUR);
@@ -636,7 +663,7 @@ public class GameCatalogueUI extends JFrame {
         return statusPanel;
     }
 
-    // Represents submit game button and functions
+    // Represents the play status buttons
     private class StatusButton extends JButton implements ActionListener {
 
         StatusButton(String option) {
@@ -684,8 +711,8 @@ public class GameCatalogueUI extends JFrame {
     // EFFECTS: creates endMessage pop-up to say goodbye to the user
     protected void endMessage() {
         if (gameCatalogueApp.gameCatalogue == null) {
-            JOptionPane.showMessageDialog(null, "Goodbye! Happy Gaming :)",
-                    "See you next time!", JOptionPane.PLAIN_MESSAGE);
+            message("Goodbye! Happy Gaming :)",
+                    "See you next time!", "plain");
             setVisible(true);
         } else {
             String goodbye = "Goodbye, " + gameCatalogueApp.gameCatalogue.getUsername() + "!  Happy gaming :)";
@@ -695,4 +722,12 @@ public class GameCatalogueUI extends JFrame {
         }
     }
 
+    // EFFECTS: creates formatted JLabel to UI colours and format
+    private JLabel formattedLabel(String label, Font font) {
+        JLabel createLabel = new JLabel(label);
+        createLabel.setForeground(FONT_COLOUR);
+        createLabel.setFont(font);
+
+        return createLabel;
+    }
 }

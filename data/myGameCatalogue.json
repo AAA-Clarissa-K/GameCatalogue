@@ -1,21 +1,11 @@
 {
-    "games": [
-        {
-            "year": 2013,
-            "play status": "COMPLETED",
-            "genre": "RPG",
-            "developer": "Me :)",
-            "title": "Test",
-            "platform": "PlayStation"
-        },
-        {
-            "year": 2013,
-            "play status": "CURRENTLY_PLAYING",
-            "genre": "RPG",
-            "developer": "Me :)",
-            "title": "Test 2",
-            "platform": "PlayStation"
-        }
-    ],
-    "username": "Clank"
+    "games": [{
+        "year": 2035,
+        "play status": "PLAN_TO_PLAY",
+        "genre": "ADVENTURE",
+        "developer": "me",
+        "title": "ghetto",
+        "platform": "laptop"
+    }],
+    "username": "vballs"
 }

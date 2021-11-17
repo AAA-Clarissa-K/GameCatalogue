@@ -59,11 +59,11 @@ public class Game implements Writable {
     public void setPlayStatus(String ps) {
         if (ps.equals("completed")) {
             playStatus = COMPLETED;
-        } else if (ps.equals("currently_playing")) {
+        } else if (ps.equals("currently playing")) {
             playStatus = CURRENTLY_PLAYING;
-        } else if (ps.equals("on_hold")) {
+        } else if (ps.equals("on hold")) {
             playStatus = ON_HOLD;
-        } else {
+        } else if (ps.equals("plan to play")) {
             playStatus = PLAN_TO_PLAY;  // last possible string input given requires restriction
         }
     }

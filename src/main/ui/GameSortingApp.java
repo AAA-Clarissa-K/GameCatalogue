@@ -9,7 +9,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 
-import static javafx.application.Platform.exit;
 import static model.GameGenre.*;
 
 // Represents the console interface of a game sorting application

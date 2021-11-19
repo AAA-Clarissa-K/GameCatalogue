@@ -6,6 +6,7 @@ import persistence.Writable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 //  A game catalogue consists of the user's username (String), and a list of games the user has added (List<Game>).
 public class GameCatalogue implements Writable {
@@ -32,7 +33,7 @@ public class GameCatalogue implements Writable {
     // EFFECTS: returns the game with the given string title, otherwise returns null
     public Game getGame(String name) {
         for (Game g: allGames) {
-            if (g.getTitle().equals(name)) {
+            if (g.getTitle().equalsIgnoreCase(name)) {
                 return g;
             }
         }

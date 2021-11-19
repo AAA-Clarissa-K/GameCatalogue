@@ -82,7 +82,7 @@ public class GameCatalogueUI extends JFrame {
     // Display game page component
     private JFrame gamePage;
 
-    // EFFECTS: sets up window where Game Catalogue will run
+    // constructs a game catalogue UI
     public GameCatalogueUI() {
         super("Game Catalogue");
         setSize(WIDTH, HEIGHT);
@@ -93,6 +93,7 @@ public class GameCatalogueUI extends JFrame {
         setVisible(true);
     }
 
+    // EFFECTS: initializes main components of the main title and menu
     protected void initComponents() {
         titleLabel = formattedLabel("Welcome to your Game Catalogue",MAIN_TITLE_FONT);
         banner = new ImageIcon("src/Banner.jpg");
@@ -120,14 +121,16 @@ public class GameCatalogueUI extends JFrame {
         gamePage = new JFrame();
     }
 
+    // EFFECTS: initialised components of the change status page
     private void initChangeStatusComponents() {
         inputStatusPage = new JFrame("Input Play Status");
-        inputStatusPage.setSize(WIDTH / 3, HEIGHT / 3);
-        inputStatusPage.getContentPane().setBackground(BACKGROUND_COLOUR);
-        inputStatusPage.setLayout(new GridLayout(0,1));
-        JLabel inputStatusPrompt = formattedLabel("What playing status is this game?", TITLE_FONT);
-        inputStatusPrompt.setHorizontalAlignment(JLabel.CENTER);
-        inputStatusPage.add(inputStatusPrompt);
+//        inputStatusPage.setSize(WIDTH / 3, HEIGHT / 3);
+//        inputStatusPage.getContentPane().setBackground(BACKGROUND_COLOUR);
+//        inputStatusPage.setLayout(new GridLayout(0,1));
+//        JLabel inputStatusPrompt = formattedLabel("What playing status is this game?", TITLE_FONT);
+//        inputStatusPrompt.setHorizontalAlignment(JLabel.CENTER);
+//        inputStatusPage.add(inputStatusPrompt);
+//        inputStatusPage.add(createStatusPanel());
 
         changeStatusPage = new JFrame();
         changeStatusPage.setLayout(new GridLayout(0,1));
@@ -250,12 +253,14 @@ public class GameCatalogueUI extends JFrame {
     // Represents the username submit button
     private class UsernameButton extends JButton implements ActionListener {
 
+        // constructs a button to submit the username
         UsernameButton() {
             super("submit");
             setBounds(0,0,100,50);
             addActionListener(this);
         }
 
+        // EFFECTS: actions performed when the username button is selected
         public void actionPerformed(ActionEvent e) {
             if (usernameField.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Please enter a username",
@@ -271,11 +276,13 @@ public class GameCatalogueUI extends JFrame {
     // Represents main menu button and functions
     private class MainMenuButton extends JButton implements ActionListener {
 
+        // constructs the main menu option buttons
         MainMenuButton(String option) {
             super(option);
             addActionListener(this);
         }
 
+        // EFFECTS: actions performed when a main menu option button is selected
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == viewGames) {
@@ -315,10 +322,10 @@ public class GameCatalogueUI extends JFrame {
         }
     }
 
-    // EFFECTS: creates search page
+    // EFFECTS: creates search page JFrame with depending on search type
     private void createSearchPage(JButton command) {
         searchGameFrame = new JFrame("Game Search");
-        searchGameFrame.setSize(WIDTH / 2, HEIGHT / 5);
+        searchGameFrame.setSize(WIDTH / 2, HEIGHT / 3);
         searchGameFrame.getContentPane().setBackground(BACKGROUND_COLOUR);
         searchGameFrame.setVisible(true);
         searchGameFrame.setLayout(new GridLayout(0,1));
@@ -361,25 +368,63 @@ public class GameCatalogueUI extends JFrame {
             if (e.getSource() == toggleGameSearch) {
                 searchGameMethod(searchGame);
             } else if (e.getSource() == toggleGenreSearch) {
-                searchGameFrame.dispose();
-                showGameOfGenre();
+                beginGenreSearch();
             } else if (e.getSource() == toggleStatusSearch) {
-                searchGameFrame.dispose();
-                showGameOfStatus();
+                beginStatusSearch();
             } else if (e.getSource() == searchGameForStatus) {
-                changeStatusPage.dispose();
-                inputStatusChangePage();
+                beginSearchForStatusChange();
             } else if (e.getSource() == submitChange) {
-                inputStatusPage.dispose();
-                gameCatalogueApp.gameCatalogue.getGame(intendedGame.getTitle()).setPlayStatus(
-                        statusButtonOutput.toString().toLowerCase());
-                intendedGame = null;
-                clearFields();
-                message("Successfully changed game status", "Game Status Changed", "plain");
+                intendedGame = gameCatalogueApp.gameCatalogue.getGame(searchGameField.getText());
+                if (statusButtonOutput == null) {
+                    message("No status selected", "No input", "error");
+                } else {
+                    successfulStatusChange();
+                }
             }
+        }
+
+        // EFFECTS: checks to see if there is a game to change status
+        private void beginSearchForStatusChange() {
+            intendedGame = gameCatalogueApp.gameCatalogue.getGame(searchGameField.getText());
+            if (searchGameField.getText().isEmpty()) {
+                message("No game input given", "No input", "error");
+            } else if (intendedGame == null) {
+                message("No such game found", "No Game Found", "error");
+            } else {
+                inputStatusChangePage();
+            }
+        }
+
+        // EFFECTS: begins status search by checking if there is a valid status input
+        private void beginStatusSearch() {
+            if (statusButtonOutput == null) {
+                message("No status selected", "No input", "error");
+            } else {
+                showGameOfStatus();
+            }
+        }
+
+        // EFFECTS: begins genre search by checking if there is a valid genre input
+        private void beginGenreSearch() {
+            if (genreButtonOutput == null) {
+                message("No genre selected", "No input", "error");
+            } else {
+                showGameOfGenre();
+            }
+        }
+
+        // EFFECTS: changes status of searched game
+        private void successfulStatusChange() {
+            inputStatusPage.dispose();
+            String playStatusChange = statusButtonOutput.toString().toLowerCase().replace("_"," ");
+            intendedGame.setPlayStatus(playStatusChange);
+            intendedGame = null;
+            clearFields();
+            message("Successfully changed game status", "Game Status Changed", "plain");
         }
     }
 
+    // EFFECTS: returns game details from game search
     private void searchGameMethod(Game searchGame) {
         if (searchGameField.getText().isEmpty() || searchGame == null) {
             message("No such game was found in your catalogue", "Game Not Found", "plain");
@@ -387,10 +432,12 @@ public class GameCatalogueUI extends JFrame {
             searchGameFrame.dispose();
             gameCatalogueApp.searchGameDetails(searchGameField.getText());
         }
+        searchGameField.setText("");
     }
 
     // EFFECTS: filters games by genre and displays them
     private void showGameOfGenre() {
+        searchGameFrame.dispose();
         String genreGamesList = gameCatalogueApp.gameCatalogue.assortByGenre(
                 String.valueOf(genreButtonOutput).toLowerCase());
         ArrayList<String> finalGenreGames = new ArrayList(Arrays.asList(genreGamesList.split(", ")));
@@ -399,12 +446,13 @@ public class GameCatalogueUI extends JFrame {
         } else {
             String pageTitle = "All " + genreButtonOutput + " Games";
             showGamePage(pageTitle, finalGenreGames);
-            genreButtonOutput = null;
         }
+        genreButtonOutput = null;
     }
 
     // EFFECTS: filters games by play status and displays them
     private void showGameOfStatus() {
+        searchGameFrame.dispose();
         String statusGamesList = gameCatalogueApp.gameCatalogue.assortByPlayStatus(
                 String.valueOf(statusButtonOutput).toLowerCase().replace("_"," "));
         ArrayList<String> finalStatusGames = new ArrayList(Arrays.asList(statusGamesList.split(", ")));
@@ -414,16 +462,24 @@ public class GameCatalogueUI extends JFrame {
             String pageTitle = "All " + String.valueOf(statusButtonOutput).replace("_"," ")
                     + " Games";
             showGamePage(pageTitle, finalStatusGames);
-            statusButtonOutput = null;
         }
+        statusButtonOutput = null;
     }
 
     // EFFECTS: creates input status change page
     private void inputStatusChangePage() {
-        intendedGame = gameCatalogueApp.gameCatalogue.getGame(searchGameField.getText());
+        changeStatusPage.dispose();
+        inputStatusPage = new JFrame("Input Status Page");
+        inputStatusPage.setSize(WIDTH / 3, HEIGHT / 3);
+        inputStatusPage.getContentPane().setBackground(BACKGROUND_COLOUR);
+        inputStatusPage.setLayout(new GridLayout(0,1));
+        JLabel inputStatusPrompt = formattedLabel("What playing status is this game?", TITLE_FONT);
+        inputStatusPrompt.setHorizontalAlignment(JLabel.CENTER);
+        inputStatusPage.add(inputStatusPrompt);
         inputStatusPage.add(createStatusPanel());
         inputStatusPage.add(submitChange);
         inputStatusPage.setVisible(true);
+        intendedGame = gameCatalogueApp.gameCatalogue.getGame(searchGameField.getText());
     }
 
     // EFFECTS: creates game detail page
@@ -485,7 +541,7 @@ public class GameCatalogueUI extends JFrame {
         detailPanel.add(gameStatus);
     }
 
-    // EFFECTS: toggles viewing all games
+    // EFFECTS: toggles viewing games with filter of all games, specific game, by genre and by status
     private void checkGameTitles(JButton command) {
         if (gameCatalogueApp.gameCatalogue.getAllGameTitles().isEmpty()) {
             message("There are no games in your game catalogue.", "Empty Catalogue", "plain");
@@ -535,7 +591,7 @@ public class GameCatalogueUI extends JFrame {
     // EFFECTS: displays page for adding games
     private void addGamePage() {
         addGamePage = new JFrame();
-        addGamePage.setSize(WIDTH / 3 * 2,HEIGHT / 3 * 2);
+        addGamePage.setSize(WIDTH / 4 * 3,HEIGHT / 3 * 2);
         addGamePage.getContentPane().setBackground(BACKGROUND_COLOUR);
         addGamePage.setLayout(new GridLayout(0,1));
         JLabel addGamePageTitle = formattedLabel("Add a Game", MAIN_TITLE_FONT);
@@ -575,11 +631,15 @@ public class GameCatalogueUI extends JFrame {
     // Represents submit game button and functions
     private class SubmitGameButton extends JButton implements ActionListener {
 
+        // constructor for submit game button
         SubmitGameButton(String option) {
             super(option);
             addActionListener(this);
         }
 
+        // EFFECT: action performed on button to create a game and add it to the catalogue
+        //         if any of the game detail inputs are empty, null or invalid (e.g year), show an error message
+        //         otherwise, add the respective game with given details and add to the catalogue
         @Override
         public void actionPerformed(ActionEvent e) {
             if (gameTitleField.getText().isEmpty() || gameDevField.getText().isEmpty()
@@ -607,7 +667,7 @@ public class GameCatalogueUI extends JFrame {
         }
     }
 
-    // EFFECTS: creates panel with genre buttons
+    // EFFECTS: creates panel with genre buttons added to it
     private JPanel createGenrePanel() {
         JPanel genrePanel = new JPanel();
         genrePanel.setBackground(BACKGROUND_COLOUR);
@@ -619,18 +679,21 @@ public class GameCatalogueUI extends JFrame {
         genrePanel.add(genreHorrorButton);
         genrePanel.add(genreSimulationButton);
         genrePanel.add(genrePlatformerButton);
+        genrePanel.setVisible(true);
         return genrePanel;
     }
 
     // Represents the buttons to input genres
     private class GenreButton extends JButton implements ActionListener {
 
+        // constructor for genre buttons
         GenreButton(String option) {
             super(option);
             setSize(200,80);
             addActionListener(this);
         }
 
+        // EFFECTS: genre buttons change respective genre selected
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == genreFpsButton) {
@@ -651,7 +714,7 @@ public class GameCatalogueUI extends JFrame {
         }
     }
 
-    // creates panel with play status panels
+    // EFFECTS: creates panel with play status buttons on it
     private JPanel createStatusPanel() {
         JPanel statusPanel = new JPanel();
         statusPanel.setBackground(BACKGROUND_COLOUR);
@@ -660,18 +723,21 @@ public class GameCatalogueUI extends JFrame {
         statusPanel.add(statusCurrButton);
         statusPanel.add(statusHoldButton);
         statusPanel.add(statusPlanButton);
+        statusPanel.setVisible(true);
         return statusPanel;
     }
 
     // Represents the play status buttons
     private class StatusButton extends JButton implements ActionListener {
 
+        // constructor for status buttons
         StatusButton(String option) {
             super(option);
             setSize(200,80);
             addActionListener(this);
         }
 
+        // EFFECTS: changes status selected when respective button is pressed
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == statusComplButton) {

@@ -1,17 +1,12 @@
 package ui;
 
-import model.Event;
-import model.EventLog;
 import model.Game;
 import model.GameCatalogue;
-import model.exception.LogException;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
-import javax.swing.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.Scanner;
 
 // Represents the console interface of a game sorting application

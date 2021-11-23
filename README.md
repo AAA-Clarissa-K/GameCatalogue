@@ -69,3 +69,9 @@ Mon Nov 22 20:39:17 PST 2021: Saving games... <br><br>
 
 <b>Notes:</b><br>
 *Called twice to initially check if null, and then to produce value if not null<br>
+## Phase 4: Task 3
+I wrote the UI as one class for this project: 
+- Would like to try refactoring separate frames and their buttons as separate classes so components are clearer, and 
+easier to find
+- Perhaps creating a helper method that would help create JFrames into the format my program looks, so I don't have to
+make many calls to do the same thing

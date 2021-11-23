@@ -1,12 +1,14 @@
 package ui;
 
 import model.*;
+import model.Event;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 
 import static model.GameGenre.*;
 import static model.PlayStatus.*;
@@ -83,14 +85,17 @@ public class GameCatalogueUI extends JFrame {
     private JFrame gamePage;
 
     // constructs a game catalogue UI
-    public GameCatalogueUI() {
+    public GameCatalogueUI(GameSortingApp gameSortingApp) {
         super("Game Catalogue");
         setSize(WIDTH, HEIGHT);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         getContentPane().setBackground(BACKGROUND_COLOUR);
 
+        gameCatalogueApp = gameSortingApp;
         initComponents();
         setVisible(true);
+
+        startTitleScreen();
     }
 
     // EFFECTS: initializes main components of the main title and menu
@@ -101,7 +106,7 @@ public class GameCatalogueUI extends JFrame {
         gameImage = new ImageIcon("src/gameCover.jpg");
         usernamePanel = null;
         usernameField = new JTextField(20);
-        gameCatalogueApp = new GameSortingApp(this);
+//        gameCatalogueApp = new GameSortingApp(this);
         submitUsername = new UsernameButton();
 
         initMainMenuComponents();
@@ -286,11 +291,11 @@ public class GameCatalogueUI extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == viewGames) {
-                checkGameTitles(viewGames);
+                checkGameTitles(viewGames); // counts one event
             } else if (e.getSource() == searchGame) {
-                checkGameTitles(searchGame);
+                checkGameTitles(searchGame); // counts three DUPLICATED events
             } else if (e.getSource() == searchGenre) {
-                checkGameTitles(searchGenre);
+                checkGameTitles(searchGenre); // counts two DUPLICATED events
             } else if (e.getSource() == searchStatus) {
                 checkGameTitles(searchStatus);
             } else if (e.getSource() == addGame) {
@@ -364,8 +369,8 @@ public class GameCatalogueUI extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            Game searchGame = gameCatalogueApp.gameCatalogue.getGame(searchGameField.getText());
             if (e.getSource() == toggleGameSearch) {
+                Game searchGame = gameCatalogueApp.gameCatalogue.getGame(searchGameField.getText());
                 searchGameMethod(searchGame);
             } else if (e.getSource() == toggleGenreSearch) {
                 beginGenreSearch();
@@ -374,7 +379,7 @@ public class GameCatalogueUI extends JFrame {
             } else if (e.getSource() == searchGameForStatus) {
                 beginSearchForStatusChange();
             } else if (e.getSource() == submitChange) {
-                intendedGame = gameCatalogueApp.gameCatalogue.getGame(searchGameField.getText());
+//                intendedGame = gameCatalogueApp.gameCatalogue.getGame(searchGameField.getText());
                 if (statusButtonOutput == null) {
                     message("No status selected", "No input", "error");
                 } else {
@@ -479,7 +484,7 @@ public class GameCatalogueUI extends JFrame {
         inputStatusPage.add(createStatusPanel());
         inputStatusPage.add(submitChange);
         inputStatusPage.setVisible(true);
-        intendedGame = gameCatalogueApp.gameCatalogue.getGame(searchGameField.getText());
+//        intendedGame = gameCatalogueApp.gameCatalogue.getGame(searchGameField.getText());
     }
 
     // EFFECTS: creates game detail page
@@ -545,20 +550,18 @@ public class GameCatalogueUI extends JFrame {
     private void checkGameTitles(JButton command) {
         if (gameCatalogueApp.gameCatalogue.getAllGameTitles().isEmpty()) {
             message("There are no games in your game catalogue.", "Empty Catalogue", "plain");
-        } else {
-            if (command.equals(viewGames)) {
-                String gameCombined = gameCatalogueApp.gameCatalogue.getAllGameTitles();
-                ArrayList<String> gameTitles = new ArrayList(Arrays.asList(gameCombined.split(", ")));
-                showGamePage("All Games on File", gameTitles);
-            } else if (command.equals(searchGame)) {
-                createSearchPage(searchGame);
-            } else if (command.equals(searchGenre)) {
-                createSearchPage(searchGenre);
-            } else if (command.equals(searchStatus)) {
-                createSearchPage(searchStatus);
-            } else if (command.equals(changeStatus)) {
-                changeStatusPage();
-            }
+        } else if (command.equals(viewGames)) {
+            String gameCombined = gameCatalogueApp.gameCatalogue.getAllGameTitles();
+            ArrayList<String> gameTitles = new ArrayList(Arrays.asList(gameCombined.split(", ")));
+            showGamePage("All Games on File", gameTitles);
+        } else if (command.equals(searchGame)) {
+            createSearchPage(searchGame);
+        } else if (command.equals(searchGenre)) {
+            createSearchPage(searchGenre);
+        } else if (command.equals(searchStatus)) {
+            createSearchPage(searchStatus);
+        } else if (command.equals(changeStatus)) {
+            changeStatusPage();
         }
     }
 
@@ -780,12 +783,23 @@ public class GameCatalogueUI extends JFrame {
             message("Goodbye! Happy Gaming :)",
                     "See you next time!", "plain");
             setVisible(true);
+            printLog();
         } else {
             String goodbye = "Goodbye, " + gameCatalogueApp.gameCatalogue.getUsername() + "!  Happy gaming :)";
             JOptionPane.showMessageDialog(null, goodbye, "See you next time!",
                     JOptionPane.PLAIN_MESSAGE);
             setVisible(true);
+            printLog();
         }
+    }
+
+    // EFFECTS: prints the Event log
+    private void printLog() {
+        for (Iterator<Event> it = EventLog.getInstance().iterator(); it.hasNext(); ) {
+            Event e = it.next();
+            System.out.println(e.getDate() + ": " + e.getDescription());
+        }
+        EventLog.getInstance().clear();
     }
 
     // EFFECTS: creates formatted JLabel to UI colours and format

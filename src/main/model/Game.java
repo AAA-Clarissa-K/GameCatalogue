@@ -26,6 +26,7 @@ public class Game implements Writable {
         this.platform = platform;
         this.year = year;
         this.playStatus = playStatus;
+        EventLog.getInstance().logEvent(new Event("Game titled " + title + " was created."));
     }
 
     // getters
@@ -58,12 +59,16 @@ public class Game implements Writable {
     // EFFECTS: changes a game's playing status to another playing status based on its assigned string
     public void setPlayStatus(String ps) {
         if (ps.equals("completed")) {
+            EventLog.getInstance().logEvent(new Event(getTitle() + "'s status changed to COMPLETED"));
             playStatus = COMPLETED;
         } else if (ps.equals("currently playing")) {
+            EventLog.getInstance().logEvent(new Event(getTitle() + "'s status changed to CURRENTLY PLAYING"));
             playStatus = CURRENTLY_PLAYING;
         } else if (ps.equals("on hold")) {
+            EventLog.getInstance().logEvent(new Event(getTitle() + "'s status changed to ON HOLD"));
             playStatus = ON_HOLD;
         } else {
+            EventLog.getInstance().logEvent(new Event(getTitle() + "'s status changed to PLAN TO PLAY"));
             playStatus = PLAN_TO_PLAY;  // last possible string input given requires restriction
         }
     }

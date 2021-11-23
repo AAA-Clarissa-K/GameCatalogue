@@ -1,15 +1,18 @@
 package ui;
 
+import model.Event;
+import model.EventLog;
+import model.Game;
 import model.GameCatalogue;
-import model.GameGenre;
+import model.exception.LogException;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
+import javax.swing.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.Scanner;
-
-import static model.GameGenre.*;
 
 // Represents the console interface of a game sorting application
 public class GameSortingApp {
@@ -21,22 +24,22 @@ public class GameSortingApp {
     private GameCatalogueUI catalogueUI;
 
     // EFFECTS: runs the game sorting application
-    public GameSortingApp(GameCatalogueUI catalogueUI) {
-        runGameSortingApp(catalogueUI);
+    public GameSortingApp() {
+        runGameSortingApp();
     }
 
     // EFFECTS: processes user input
-    private void runGameSortingApp(GameCatalogueUI catalogueUI) {
+    private void runGameSortingApp() {
 
-        init(catalogueUI);
+        init();
 
-        catalogueUI.startTitleScreen();
+//        catalogueUI.startTitleScreen();
+        catalogueUI = new GameCatalogueUI(this);
     }
 
     // MODIFIES: this
     // EFFECTS: initializes JsonWriter and JsonReader
-    private void init(GameCatalogueUI catalogueUI) {
-        this.catalogueUI = catalogueUI;
+    private void init() {
         input = new Scanner(System.in);
         jsonWriter = new JsonWriter(GAME_STORE);
         jsonReader = new JsonReader(GAME_STORE);
@@ -53,63 +56,63 @@ public class GameSortingApp {
             catalogueUI.createGameDetailPage(gameCatalogue.getGame(targetGame));
         }
     }
-
-    // EFFECTS: returns GameGenre to corresponding string input
-    private GameGenre askGenre() {
-        System.out.println("\nWhat is the game genre?");
-        String genreInput = returnGenre();
-
-        if (genreInput.equals("fps")) {
-            return FPS;
-        } else if (genreInput.equals("rpg")) {
-            return RPG;
-        } else if (genreInput.equals("adventure")) {
-            return ADVENTURE;
-        } else if (genreInput.equals("puzzle")) {
-            return PUZZLE;
-        } else if (genreInput.equals("horror")) {
-            return HORROR;
-        } else if (genreInput.equals("simulation")) {
-            return SIMULATION;
-        } else {
-            return PLATFORMER;
-        }
-    }
-
-    // EFFECTS: returns given genre string if valid, if invalid, asks for another genre attempt
-    private String returnGenre() {
-        System.out.println("- FPS");
-        System.out.println("- RPG");
-        System.out.println("- Adventure");
-        System.out.println("- Puzzle");
-        System.out.println("- Horror");
-        System.out.println("- Simulation");
-        System.out.println("- Platformer");
-        String givenGenre = input.next().toLowerCase();
-        if (!(givenGenre.equals("fps") || givenGenre.equals("rpg") || givenGenre.equals("adventure")
-                || givenGenre.equals("puzzle") || givenGenre.equals("horror") || givenGenre.equals("simulation")
-                || givenGenre.equals("platformer"))) {
-            System.out.println("Invalid game genre, please try an available genre below.");
-            askGenre();
-        }
-
-        return givenGenre;
-    }
-
-    // EFFECTS: returns given play status string if valid, if invalid, asks for another play status attempt
-    private String askValidPlayStatus() {
-        System.out.println("- Completed");
-        System.out.println("- Currently playing");
-        System.out.println("- On hold");
-        System.out.println("- Plan to play");
-        String initialPlayStatus = input.next().toLowerCase();
-        if (!(initialPlayStatus.equals("completed") || initialPlayStatus.equals("currently playing")
-                || initialPlayStatus.equals("on hold") || initialPlayStatus.equals("plan to play"))) {
-            System.out.println("Invalid play status, please try one of the valid ones below.");
-            askValidPlayStatus();
-        }
-        return initialPlayStatus;
-    }
+//
+//    // EFFECTS: returns GameGenre to corresponding string input
+//    private GameGenre askGenre() {
+//        System.out.println("\nWhat is the game genre?");
+//        String genreInput = returnGenre();
+//
+//        if (genreInput.equals("fps")) {
+//            return FPS;
+//        } else if (genreInput.equals("rpg")) {
+//            return RPG;
+//        } else if (genreInput.equals("adventure")) {
+//            return ADVENTURE;
+//        } else if (genreInput.equals("puzzle")) {
+//            return PUZZLE;
+//        } else if (genreInput.equals("horror")) {
+//            return HORROR;
+//        } else if (genreInput.equals("simulation")) {
+//            return SIMULATION;
+//        } else {
+//            return PLATFORMER;
+//        }
+//    }
+//
+//    // EFFECTS: returns given genre string if valid, if invalid, asks for another genre attempt
+//    private String returnGenre() {
+//        System.out.println("- FPS");
+//        System.out.println("- RPG");
+//        System.out.println("- Adventure");
+//        System.out.println("- Puzzle");
+//        System.out.println("- Horror");
+//        System.out.println("- Simulation");
+//        System.out.println("- Platformer");
+//        String givenGenre = input.next().toLowerCase();
+//        if (!(givenGenre.equals("fps") || givenGenre.equals("rpg") || givenGenre.equals("adventure")
+//                || givenGenre.equals("puzzle") || givenGenre.equals("horror") || givenGenre.equals("simulation")
+//                || givenGenre.equals("platformer"))) {
+//            System.out.println("Invalid game genre, please try an available genre below.");
+//            askGenre();
+//        }
+//
+//        return givenGenre;
+//    }
+//
+//    // EFFECTS: returns given play status string if valid, if invalid, asks for another play status attempt
+//    private String askValidPlayStatus() {
+//        System.out.println("- Completed");
+//        System.out.println("- Currently playing");
+//        System.out.println("- On hold");
+//        System.out.println("- Plan to play");
+//        String initialPlayStatus = input.next().toLowerCase();
+//        if (!(initialPlayStatus.equals("completed") || initialPlayStatus.equals("currently playing")
+//                || initialPlayStatus.equals("on hold") || initialPlayStatus.equals("plan to play"))) {
+//            System.out.println("Invalid play status, please try one of the valid ones below.");
+//            askValidPlayStatus();
+//        }
+//        return initialPlayStatus;
+//    }
 
     // EFFECTS: saves the game catalogue to file
     protected void saveGameCatalogue() {

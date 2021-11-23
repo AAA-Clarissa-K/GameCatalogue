@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import static model.PlayStatus.COMPLETED;
+
 //  A game catalogue consists of the user's username (String), and a list of games the user has added (List<Game>).
 public class GameCatalogue implements Writable {
     private String username;
@@ -17,6 +19,7 @@ public class GameCatalogue implements Writable {
     public GameCatalogue(String username) {
         this.username = username;
         allGames = new ArrayList<>();
+        EventLog.getInstance().logEvent(new Event("Game catalogue under " + username + " was made."));
     }
 
     // getter
@@ -27,6 +30,8 @@ public class GameCatalogue implements Writable {
     // MODIFIES: this
     // EFFECTS: changes username of catalogue
     public void changeUsername(String newUsername) {
+
+        EventLog.getInstance().logEvent(new Event("Changed game catalogue name to " + newUsername));
         username = newUsername;
     }
 
@@ -34,9 +39,11 @@ public class GameCatalogue implements Writable {
     public Game getGame(String name) {
         for (Game g: allGames) {
             if (g.getTitle().equalsIgnoreCase(name)) {
+                EventLog.getInstance().logEvent(new Event("Found the game called " + g.getTitle()));
                 return g;
             }
         }
+        EventLog.getInstance().logEvent(new Event("Failed to find a game called " + name));
         return null;
     }
 
@@ -48,7 +55,9 @@ public class GameCatalogue implements Writable {
     // MODIFIES: this
     // EFFECTS: adds a game to the game catalogue
     public void addGame(Game g) {
+
         allGames.add(g);
+        EventLog.getInstance().logEvent(new Event(g.getTitle() + " added to your catalogue."));
     }
 
     // EFFECTS: returns a single string of all game titles,
@@ -59,6 +68,7 @@ public class GameCatalogue implements Writable {
             String title = g.getTitle();
             allGamesString.add(title);
         }
+        EventLog.getInstance().logEvent(new Event("Retrieved games on " + getUsername() + "'s game catalogue."));
         return String.join(", ", allGamesString);
     }
 
@@ -74,6 +84,7 @@ public class GameCatalogue implements Writable {
                 givenPlayStatus.add(title);
             }
         }
+        EventLog.getInstance().logEvent(new Event("Filtered to games of play status: " + playStatus + "."));
         return String.join(", ", givenPlayStatus);
     }
 
@@ -89,12 +100,14 @@ public class GameCatalogue implements Writable {
                 givenGenre.add(title);
             }
         }
+        EventLog.getInstance().logEvent(new Event("Filtered to games of genre: " + genre + "."));
         return String.join(", ", givenGenre);
     }
 
     // EFFECTS: converts the game catalogue into a JSONObject
     @Override
     public JSONObject toJson() {
+        EventLog.getInstance().logEvent(new Event("Saving games..."));
         JSONObject json = new JSONObject();
         json.put("username", username);
         json.put("games", gamesToJson());

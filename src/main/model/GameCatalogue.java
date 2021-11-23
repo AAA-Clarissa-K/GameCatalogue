@@ -31,7 +31,8 @@ public class GameCatalogue implements Writable {
     // EFFECTS: changes username of catalogue
     public void changeUsername(String newUsername) {
 
-        EventLog.getInstance().logEvent(new Event("Changed game catalogue name to " + newUsername));
+        EventLog.getInstance().logEvent(new Event("Updated " + newUsername + "'s game catalogue name with "
+                + username + "'s games."));
         username = newUsername;
     }
 
@@ -68,7 +69,7 @@ public class GameCatalogue implements Writable {
             String title = g.getTitle();
             allGamesString.add(title);
         }
-        EventLog.getInstance().logEvent(new Event("Retrieved games on " + getUsername() + "'s game catalogue."));
+        EventLog.getInstance().logEvent(new Event("Retrieved all games on " + getUsername() + "'s game catalogue."));
         return String.join(", ", allGamesString);
     }
 

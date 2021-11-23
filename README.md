@@ -30,3 +30,42 @@ For my game catalogue:
 - As a user, I want to be able to load my games from file
 
 (Code for saving and loading files referenced from JSON libraries)
+
+## Phase 4: Task 2
+### Event Log Printing Sample (Annotated)
+<b><i>Starting application, creating a game catalogue under "Clank":</b></i><br>
+Mon Nov 22 20:36:42 PST 2021: Game catalogue under Clank was made. <br><br>
+<b><i>Loading previously saved data from "Kris":</b></i><br>
+Mon Nov 22 20:36:46 PST 2021: Game catalogue under Kris was made. <br>
+Mon Nov 22 20:36:46 PST 2021: Game titled Spiderman was created. <br>
+Mon Nov 22 20:36:46 PST 2021: Spiderman added to your catalogue. <br>
+Mon Nov 22 20:36:46 PST 2021: Game titled Cuphead was created. <br>
+Mon Nov 22 20:36:46 PST 2021: Cuphead added to your catalogue. <br>
+Mon Nov 22 20:36:46 PST 2021: Game titled Spiritfarer was created. <br>
+Mon Nov 22 20:36:46 PST 2021: Spiritfarer added to your catalogue. <br>
+Mon Nov 22 20:36:46 PST 2021: Updated Clank's game catalogue name with Kris's games. <br><br>
+<b><i>Viewing all games:</b></i><br>
+Mon Nov 22 20:36:48 PST 2021: Retrieved all games on Clank's game catalogue. <br>
+Mon Nov 22 20:36:48 PST 2021: Retrieved all games on Clank's game catalogue.* <br><br>
+<b><i>Searching for the game "Spiderman":</b></i><br>
+Mon Nov 22 20:36:54 PST 2021: Retrieved all games on Clank's game catalogue. <br>
+Mon Nov 22 20:36:56 PST 2021: Found the game called Spiderman <br><br>
+<b><i>Filtering search by genre "Platformer":</b></i><br>
+Mon Nov 22 20:37:00 PST 2021: Retrieved all games on Clank's game catalogue. <br>
+Mon Nov 22 20:37:05 PST 2021: Filtered to games of genre: platformer. <br><br>
+<b><i>Filtering search by play status "Currently playing":</b></i><br>
+Mon Nov 22 20:37:08 PST 2021: Retrieved all games on Clank's game catalogue. <br>
+Mon Nov 22 20:37:10 PST 2021: Filtered to games of play status: currently playing. <br><br>
+<b><i>Adding the game "Pokemon Diamond":</b></i><br>
+Mon Nov 22 20:38:34 PST 2021: Game titled Pokemon Diamond was created. <br>
+Mon Nov 22 20:38:34 PST 2021: Pokemon Diamond added to your catalogue. <br><br>
+<b><i>Changin the play status of a game to "On hold":</b></i><br>
+Mon Nov 22 20:38:41 PST 2021: Retrieved all games on Clank's game catalogue. <br>
+Mon Nov 22 20:39:09 PST 2021: Found the game called Spiritfarer <br>
+Mon Nov 22 20:39:10 PST 2021: Spiritfarer's status changed to ON HOLD <br><br>
+<b><i>Saving games to the file:</b></i><br>
+Mon Nov 22 20:39:17 PST 2021: Saving games... <br><br>
+<b><i>Exiting the program prints the Event Log above before clearing the log.</b></i><br>
+
+<b>Notes:</b><br>
+*Called twice to initially check if null, and then to produce value if not null<br>

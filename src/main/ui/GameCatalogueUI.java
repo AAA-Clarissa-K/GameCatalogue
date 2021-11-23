@@ -379,7 +379,6 @@ public class GameCatalogueUI extends JFrame {
             } else if (e.getSource() == searchGameForStatus) {
                 beginSearchForStatusChange();
             } else if (e.getSource() == submitChange) {
-//                intendedGame = gameCatalogueApp.gameCatalogue.getGame(searchGameField.getText());
                 if (statusButtonOutput == null) {
                     message("No status selected", "No input", "error");
                 } else {
@@ -431,11 +430,11 @@ public class GameCatalogueUI extends JFrame {
 
     // EFFECTS: returns game details from game search
     private void searchGameMethod(Game searchGame) {
-        if (searchGameField.getText().isEmpty() || searchGame == null) {
+        if (searchGame == null) {
             message("No such game was found in your catalogue", "Game Not Found", "plain");
         } else {
             searchGameFrame.dispose();
-            gameCatalogueApp.searchGameDetails(searchGameField.getText());
+            gameCatalogueApp.searchGameDetails(searchGame);
         }
         searchGameField.setText("");
     }
@@ -782,15 +781,13 @@ public class GameCatalogueUI extends JFrame {
         if (gameCatalogueApp.gameCatalogue == null) {
             message("Goodbye! Happy Gaming :)",
                     "See you next time!", "plain");
-            setVisible(true);
-            printLog();
         } else {
             String goodbye = "Goodbye, " + gameCatalogueApp.gameCatalogue.getUsername() + "!  Happy gaming :)";
             JOptionPane.showMessageDialog(null, goodbye, "See you next time!",
                     JOptionPane.PLAIN_MESSAGE);
-            setVisible(true);
-            printLog();
         }
+        setVisible(true);
+        printLog();
     }
 
     // EFFECTS: prints the Event log

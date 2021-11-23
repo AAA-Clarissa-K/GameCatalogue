@@ -48,15 +48,10 @@ public class GameSortingApp {
 
     // EFFECTS: returns game details if there is a game with the matching string title,
     //          if getting game produces null, says game title can't be found
-    protected void searchGameDetails(String targetGame) {
-        if (gameCatalogue.getGame(targetGame) == null) {
-            catalogueUI.message("Game with this title couldn't be found...", "No Game Found",
-                    "plain");
-        } else {
-            catalogueUI.createGameDetailPage(gameCatalogue.getGame(targetGame));
-        }
+    protected void searchGameDetails(Game searchGame) {
+        catalogueUI.createGameDetailPage(searchGame);
     }
-//
+
 //    // EFFECTS: returns GameGenre to corresponding string input
 //    private GameGenre askGenre() {
 //        System.out.println("\nWhat is the game genre?");

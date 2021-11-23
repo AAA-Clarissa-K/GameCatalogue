@@ -6,9 +6,6 @@ import persistence.Writable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-
-import static model.PlayStatus.COMPLETED;
 
 //  A game catalogue consists of the user's username (String), and a list of games the user has added (List<Game>).
 public class GameCatalogue implements Writable {

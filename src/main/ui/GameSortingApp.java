@@ -13,7 +13,6 @@ import java.util.Scanner;
 public class GameSortingApp {
     protected static final String GAME_STORE = "./data/myGameCatalogue.json";
     protected GameCatalogue gameCatalogue;
-    private Scanner input;
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
     private GameCatalogueUI catalogueUI;
@@ -35,10 +34,8 @@ public class GameSortingApp {
     // MODIFIES: this
     // EFFECTS: initializes JsonWriter and JsonReader
     private void init() {
-        input = new Scanner(System.in);
         jsonWriter = new JsonWriter(GAME_STORE);
         jsonReader = new JsonReader(GAME_STORE);
-        input.useDelimiter("\n");
     }
 
     // EFFECTS: returns game details if there is a game with the matching string title,

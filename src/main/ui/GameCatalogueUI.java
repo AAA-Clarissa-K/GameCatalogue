@@ -8,7 +8,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 
 import static model.GameGenre.*;
 import static model.PlayStatus.*;
@@ -88,7 +87,7 @@ public class GameCatalogueUI extends JFrame {
     public GameCatalogueUI(GameSortingApp gameSortingApp) {
         super("Game Catalogue");
         setSize(WIDTH, HEIGHT);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         getContentPane().setBackground(BACKGROUND_COLOUR);
 
         gameCatalogueApp = gameSortingApp;
@@ -787,16 +786,20 @@ public class GameCatalogueUI extends JFrame {
                     JOptionPane.PLAIN_MESSAGE);
         }
         setVisible(true);
-        printLog();
+        printLog(EventLog.getInstance());
     }
 
     // EFFECTS: prints the Event log
-    private void printLog() {
-        for (Iterator<Event> it = EventLog.getInstance().iterator(); it.hasNext(); ) {
-            Event e = it.next();
-            System.out.println(e.getDate() + ": " + e.getDescription());
+    private void printLog(EventLog el) {
+        for (Event e: el) {
+            System.out.println(e.toString());
         }
         EventLog.getInstance().clear();
+//        for (Iterator<Event> it = EventLog.getInstance().iterator(); it.hasNext(); ) {
+//            Event e = it.next();
+//            System.out.println(e.toString());
+//        }
+//        EventLog.getInstance().clear();
     }
 
     // EFFECTS: creates formatted JLabel to UI colours and format

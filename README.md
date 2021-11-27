@@ -59,7 +59,7 @@ Mon Nov 22 20:37:10 PST 2021<br> Filtered to games of play status: currently pla
 <b><i>Adding the game "Pokemon Diamond":</b></i><br>
 Mon Nov 22 20:38:34 PST 2021<br> Game titled Pokemon Diamond was created. <br>
 Mon Nov 22 20:38:34 PST 2021<br> Pokemon Diamond added to your catalogue. <br><br>
-<b><i>Changin the play status of a game to "On hold":</b></i><br>
+<b><i>Changing the play status of a game to "On hold":</b></i><br>
 Mon Nov 22 20:38:41 PST 2021<br> Retrieved all games on Clank's game catalogue. <br>
 Mon Nov 22 20:39:09 PST 2021<br> Found the game called Spiritfarer <br>
 Mon Nov 22 20:39:10 PST 2021<br> Spiritfarer's status changed to ON HOLD <br><br>
@@ -70,8 +70,10 @@ Mon Nov 22 20:39:17 PST 2021<br> Saving games... <br><br>
 <b>Notes:</b><br>
 *Called twice to initially check if null, and then to produce value if not null<br>
 ## Phase 4: Task 3
-I wrote the UI as one class for this project: 
-- Would like to try refactoring separate frames and their buttons as separate classes so components are clearer, and 
+I wrote two filtering methods in GameCatalogue that looked fairly similar with each other, so next time I could 
+probably refactor both into one method that returns the filtered game list. <br>
+Additionally, I wrote the UI as one class for this project, as opposed to having separate classes: 
+- I would like to try refactoring separate frames and their buttons as separate classes so components are clearer, and 
 easier to find
-- Perhaps creating a helper method that would help create JFrames into the format my program looks, so I don't have to
-make many calls to do the same thing
+- Perhaps creating a helper method that would help create JFrames into the format my program looks could be helpful, 
+so I don't have to make many calls to do the same thing
